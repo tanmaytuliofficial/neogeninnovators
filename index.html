@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-surface="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <title>Neo Gen Innovators | Hardware Builder Network Across India</title>
+  <meta name="description" content="An elite hardware builder network across India founded by Raushan Kumar. We run hackathons, hardware sprints, and build cyber-physical systems. We run hackathons, hardware sprints, workshops, and build cyber-physical systems.">
+
+  <!-- Google Fonts: Anton (Display), Archivo (Sans), Space Mono (Monospace), Yellowtail (Script) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Yellowtail&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Anton"', 'sans-serif'],
+            sans: ['"Archivo"', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+            script: ['"Yellowtail"', 'cursive'],
+          },
+          colors: {
+            paper: '#faf8f5',
+            'paper-2': '#eae8e4',
+            cream: '#fee9cf',
+            ink: '#080b08',
+            brand: '#00e599',
+            'brand-dark': '#059669',
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+              DEFAULT: '#00e599',
+            },
+            pitch: '#050505',
+            borderDark: '#1a1f1a',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- YouTube IFrame Player API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <!-- Universal CMS Real-Time Sync Client -->
+  <script src="cms-client.js"></script>
+
+  <style>
+    :root {
+      --paper: #faf8f5;
+      --paper-2: #eae8e4;
+      --cream: #fee9cf;
+      --ink: #120f0a;
+      --burgundy: #97192c;
+      --blue: #0284c7;
+      --blue-cobalt: #1e40af;
+      --blue-navy: #0c192c;
+      --cyan: #38bdf8;
+      --orange: #fc920d;
+      --warm: #c94218;
+      --slime: #12e29b;
+      --border-ink: #120f0a;
+    }
+
+    body {
+      background-color: #050505;
+      color: var(--ink);
+      font-family: 'Archivo', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* bits&bytes Brutalist Button */
+    .bnb-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: 3px solid var(--border-ink);
+      background-color: #ffffff;
+      color: var(--ink);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0 14px;
+      height: 38px;
+      box-shadow: 3px 3px 0 0 var(--border-ink);
+      transition: all 0.12s cubic-bezier(0.2, 0, 0, 1);
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .bnb-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 0 var(--border-ink);
+    }
+
+    .bnb-btn:active {
+      transform: translate(3px, 3px);
+      box-shadow: 0 0 0 0 var(--border-ink);
+    }
+
+    .bnb-btn-burgundy {
+      background-color: var(--burgundy);
+      color: #ffffff;
+    }
+
+    .bnb-btn-blue {
+      background-color: var(--blue);
+      color: #ffffff;
+    }
+
+    .bnb-btn-cyan {
+      background-color: var(--cyan);
+      color: var(--ink);
+    }
+
+    /* Retro Window 3D Box Shadow */
+    .retro-window {
+      border: 3px solid var(--border-ink);
+      background: var(--ink);
+      box-shadow: 10px 10px 0 0 var(--border-ink);
+    }
+
+    /* Halftone dot pattern */
+    .halftone-dots {
+      background-image: radial-gradient(rgba(18, 15, 10, 0.22) 1.5px, transparent 1.5px);
+      background-size: 16px 16px;
+    }
+
+    .halftone-dots-white {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.5px);
+      background-size: 16px 16px;
+    }
+
+    
+    /* ================= POLAROID LINE CAROUSEL STYLES ================= */
+    .pl-root {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background: transparent;
+      color: #fff;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+      outline: none;
+      cursor: grab;
+    }
+    .pl-root[data-drag='1'] {
+      cursor: grabbing;
+    }
+    .pl-string {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .pl-card {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: var(--pl-cw, 280px);
+      transform-origin: 50% 0;
+      will-change: transform;
+      cursor: inherit;
+      pointer-events: auto;
+    }
+    .pl-print {
+      margin-top: 10px;
+      background: #fbfaf7;
+      padding: 10px 10px 0;
+      border: 1px solid rgba(0,0,0,0.12);
+      box-shadow: 0 2px 4px rgba(0,0,0,.15), 0 20px 35px -15px rgba(0,0,0,.6);
+      transition: transform .5s cubic-bezier(.2,.7,.2,1), filter .5s ease;
+      border-radius: 2px;
+    }
+    .pl-card[data-on='0'] .pl-print {
+      transform: scale(.88);
+      filter: saturate(.7) brightness(.92);
+    }
+    .pl-shot {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: #181a20;
+      border-radius: 1px;
+    }
+    .pl-shot img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .pl-note {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      font: italic 500 16px/1.1 ui-serif, Georgia, 'Times New Roman', serif;
+      color: #27272a;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pl-peg {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 12px;
+      height: 28px;
+      margin-left: -6px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #c9a67a, #e3c9a1 45%, #b8915f);
+      box-shadow: 0 3px 5px rgba(0,0,0,.45);
+      z-index: 20;
+    }
+    .pl-peg::after {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 9px;
+      width: 2px;
+      height: 8px;
+      background: rgba(80,60,30,.5);
+      border-radius: 1px;
+    }
+    .pl-bar {
+      position: absolute;
+      left: clamp(16px, 4vw, 56px);
+      right: clamp(16px, 4vw, 56px);
+      bottom: clamp(16px, 3vh, 32px);
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 2vw, 24px);
+      cursor: default;
+      z-index: 40;
+    }
+    .pl-cap {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      padding-bottom: .15em;
+    }
+    .pl-cap > * {
+      display: block;
+      animation: pl-in .55s cubic-bezier(.2,.8,.2,1) both;
+    }
+    .pl-title {
+      font: 600 clamp(18px, 2.2vw, 28px)/1.15 ui-serif, Georgia, 'Times New Roman', serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fee9cf;
+    }
+    .pl-sub {
+      margin-top: 4px;
+      font: 400 13px/1.4 'Space Mono', ui-monospace, monospace;
+      color: #94a3b8;
+    }
+    .pl-count {
+      font: 700 13px/1 'Space Mono', ui-monospace, monospace;
+      letter-spacing: .14em;
+      color: #94a3b8;
+    }
+    .pl-count b {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    .pl-btn {
+      appearance: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #38bdf8;
+      background: rgba(18, 15, 10, 0.85);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: all .15s ease;
+      box-shadow: 2px 2px 0 0 #120f0a;
+    }
+    .pl-btn:hover {
+      background: #38bdf8;
+      color: #120f0a;
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 0 #120f0a;
+    }
+    .pl-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 0 0 0 0 #120f0a;
+    }
+    .pl-btn:focus-visible {
+      outline: 2px solid #38bdf8;
+      outline-offset: 2px;
+    }
+    @keyframes pl-in {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: none; opacity: 1; }
+    }
+
+    /* Floating animation for isometric cube */
+    @keyframes floatCube {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(1.5deg);
+      }
+    }
+
+    .animate-float-cube {
+      animation: floatCube 4s ease-in-out infinite;
+    }
+
+    /* Character Sticker Drop Shadow */
+    .sticker-shadow {
+      filter: drop-shadow(2px 0 0 var(--cream)) 
+              drop-shadow(-2px 0 0 var(--cream)) 
+              drop-shadow(0 2px 0 var(--cream)) 
+              drop-shadow(0 -2px 0 var(--cream)) 
+              drop-shadow(5px 5px 0 var(--ink));
+    }
+
+    /* Scroll Reveal Stagger for Meet The Founder */
+    .scroll-reveal-item {
+      opacity: 0;
+      transform: translateY(24px);
+      filter: blur(5px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform, filter;
+    }
+
+    .scroll-reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  </style>
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body class="selection:bg-[#00e599] selection:text-black">
+
+  <!-- ================= RETRO TOP NAVIGATION (bits&bytes exact layout) ================= -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3.5 flex items-center justify-between transition-transform duration-300 bg-[#050505]/85 backdrop-blur-xl border-b border-zinc-800/80">
+    <!-- Brand Logo Mark -->
+    <a href="#hero" class="flex items-center gap-2 group">
+      <span class="font-mono font-bold text-lg text-[#00e599]">&gt;_</span>
+      <div class="flex items-baseline">
+        <span class="font-sans font-bold text-xl sm:text-2xl tracking-tighter text-white leading-none">Neo<span class="text-[#00e599]">Gen</span></span>
+      </div>
+    </a>
+
+    <!-- Navigation Shortcuts -->
+    <nav class="hidden md:flex items-center gap-3">
+      <a href="#hero" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Home</a>
+      <a href="team.html" class="font-mono text-xs text-zinc-300 hover:text-[#00e599] px-3 py-1.5 transition-colors">Our Team</a>
+      <a href="#gallery" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Projects</a>
+      <a href="#who-we-are" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Journey</a>
+      <a href="#gallery" class="font-mono text-xs text-[#00e599] font-bold px-3 py-1.5 transition-colors">Gallery</a>
+    </nav>
+  </header>
+
+
+  <!-- ================= HERO SECTION (Bluish 2-Column Split Layout) ================= -->
+  <section id="hero" class="relative min-h-[100svh] pt-28 pb-16 px-6 sm:px-12 flex flex-col justify-center overflow-hidden" style="background-color: #050505; background-image: radial-gradient(circle at 60% 40%, rgba(0, 229, 153, 0.12) 0%, rgba(5, 5, 5, 0.98) 70%), linear-gradient(rgba(0, 229, 153, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 153, 0.04) 1px, transparent 1px); background-size: 100% 100%, 32px 32px, 32px 32px;">
+    
+    <!-- 2-Column Hero Content Grid -->
+    <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      
+      <!-- LEFT SIDE: Big Headline + Subtitle + Description + CTAs (Cleaned & Uncluttered) -->
+      <div class="lg:col-span-7 flex flex-col justify-center">
+        
+        <!-- Big Brand Title: NeoGen INNOVATORS (Image 3 exact font & glow) -->
+        <div class="relative inline-block mb-3">
+          <h1 class="font-sans font-black text-6xl sm:text-7xl md:text-8xl lg:text-[96px] xl:text-[112px] text-white leading-[0.88] tracking-tighter uppercase select-none drop-shadow-[4px_4px_0_#000]">
+            Neo<span class="text-[#00e599] drop-shadow-[0_0_35px_rgba(0,229,153,0.45)]">Gen</span>
+            <span class="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-[82px] tracking-tight">innovators</span>
+          </h1>
+        </div>
+
+        <!-- Subtitle from Image 3 -->
+        <p data-cms="heroTagline" class="text-xl sm:text-2xl font-bold text-white tracking-tight mt-1 mb-5 font-sans">
+          Building the Next Generation of Student Builders.
+        </p>
+
+        <!-- Body description from Image 3 -->
+        <p data-cms="heroDescription" class="text-base sm:text-lg text-zinc-400 leading-relaxed max-w-xl mb-10">
+          NeoGen is a private builders community where passionate students collaborate on hardware hackathons, IoT labs, robotics, edge silicon, and open-source innovation.
+        </p>
+
+        <!-- Hero CTAs Bar (Image 3 buttons) -->
+        <div class="flex flex-wrap items-center gap-4">
+          <a href="team.html" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-mono text-xs font-bold uppercase tracking-widest bg-[#00e599] hover:bg-[#10b981] text-black shadow-[0_0_25px_rgba(0,229,153,0.35)] hover:scale-105 transition-all cursor-pointer">
+            <span data-cms="heroCtaExplore">Explore Team →</span>
+          </a>
+
+          <a href="#gallery" class="inline-flex items-center gap-2 px-8 py-4 rounded-full font-mono text-xs font-bold uppercase tracking-widest bg-zinc-900/90 hover:bg-zinc-800 text-white border border-zinc-700/80 hover:border-zinc-500 transition-all cursor-pointer">
+            <span data-cms="heroCtaJourney">Our Journey</span>
+          </a>
+
+          <a href="#gallery" aria-label="Scroll down" class="grid w-12 h-12 place-items-center rounded-full border border-zinc-700 bg-zinc-900/90 text-zinc-300 hover:text-[#00e599] hover:border-[#00e599] transition-all">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v17M5 13l7 7 7-7" stroke-linecap="square"></path></svg>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDE: 3D Pure Black Obsidian Cube & Transparent Cutout Avatar (Without Background) -->
+      <div class="lg:col-span-5 flex items-center justify-center">
+        <div class="relative w-full max-w-sm sm:max-w-md h-[380px] sm:h-[460px] md:h-[520px] flex items-center justify-center animate-float-cube">
+          <canvas id="hero-cube-canvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          
+          <!-- Raushan Kumar Avatar Cutout WITHOUT Background (Transparent) -->
+          <div class="absolute -bottom-6 -right-2 sm:right-0 w-32 sm:w-44 md:w-48 pointer-events-none z-20">
+            <img src="raushan-avatar-nobg.png" alt="Raushan Kumar Avatar" class="w-full h-auto drop-shadow-[0_10px_25px_rgba(0,0,0,0.85)]">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= SILENT / TEASER TRANSITION (Screenshot 3 exact) ================= -->
+  
+  <!-- ================= THE BUILDER HANGER / POLAROID CAROUSEL ================= -->
+  <section id="gallery" class="relative min-h-[92svh] sm:min-h-[100svh] py-10 bg-[#07090e] text-paper border-t-3 border-ink flex flex-col justify-between overflow-hidden select-none">
+    
+    <!-- Halftone dots texture -->
+    <div class="absolute inset-0 halftone-dots-white opacity-15 pointer-events-none"></div>
+
+    <!-- The Polaroid Line Carousel Canvas / Stage -->
+    <div id="polaroid-carousel-root" class="pl-root relative w-full flex-1 flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing" style="min-height: 480px; height: 75svh;" role="region" aria-roledescription="carousel" aria-label="Neo Gen Builder Gallery" tabindex="0">
+      
+      <!-- Sagging Wire SVG -->
+      <svg id="pl-wire-svg" class="pl-string" aria-hidden="true">
+        <path id="pl-wire-path" fill="none" stroke="#78716c" stroke-width="2" stroke-linecap="round" />
+      </svg>
+
+      <!-- Polaroid Cards Container (Populated dynamically) -->
+      <div id="pl-cards-container" class="absolute inset-0 w-full h-full pointer-events-none"></div>
+
+      <!-- Bottom Interactive Control Bar -->
+      <div class="pl-bar">
+        <div class="pl-cap" id="pl-caption-box" aria-hidden="true">
+          <span class="pl-title" id="pl-title-text">Silicon Core V2</span>
+          <span class="pl-sub" id="pl-sub-text">Custom RP2040 breakout board soldered during 48hr hardware sprint.</span>
+        </div>
+        
+        <span class="pl-count" aria-hidden="true">
+          <b id="pl-active-num">01</b> / <span id="pl-total-num">06</span>
+        </span>
+
+        <button type="button" id="pl-prev-btn" class="pl-btn" aria-label="Previous">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3 5 8l5 5" stroke="currentColor" stroke-width="1.8" /></svg>
+        </button>
+
+        <button type="button" id="pl-next-btn" class="pl-btn" aria-label="Next">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="m6 3 5 5-5 5" stroke="currentColor" stroke-width="1.8" /></svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Bottom Torn Paper Divider (Exact bits&bytes SVG path) -->
+    <div class="relative w-full h-[32px] sm:h-[40px] flex items-end">
+      <svg viewBox="0 0 1200 40" preserveAspectRatio="none" class="block w-full h-full rotate-180 fill-paper">
+        <path d="M0 0H1200V33L1172 33L1137 14L1109 22L1093 26L1076 36L1062 14L1039 12L1006 13L971 31L949 19L928 25L909 28L887 34L857 23L831 26L803 32L779 34L761 26L735 19L712 19L693 21L676 23L640 27L619 20L606 34L589 21L564 25L545 12L510 29L483 34L464 21L444 14L423 32L403 20L367 34L340 27L310 34L285 13L252 34L228 28L214 28L184 20L165 31L137 28L111 30L79 19L53 29L36 18L0 10Z"></path>
+      </svg>
+    </div>
+
+  </section>
+
+
+
+  <!-- ================= WHO WE ARE SECTION (Sticky Line-by-Line Scroll Reveal) ================= -->
+  <section id="who-we-are" class="tone-paper relative bg-paper text-ink border-b-3 border-ink" style="min-height: 240vh;">
+    
+    <!-- Pinned Viewport Container -->
+    <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+      
+      <div class="max-w-6xl w-full mx-auto px-6 sm:px-12 py-6">
+        
+        <!-- 2-Column Grid: Animated Text on Left, Avatar on Right -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          <!-- LEFT COLUMN: Animated Scroll-Reveal Text -->
+          <div class="lg:col-span-7 flex flex-col justify-center">
+            
+            <!-- Section Number Tag (Order 0) -->
+            <span class="scroll-reveal-item font-mono text-[11px] font-bold text-emerald-600 tracking-[0.2em] block mb-4 uppercase flex items-center gap-2" data-reveal-order="0">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span data-cms="founderTag">§01 — MEET THE FOUNDER // WHO WE ARE</span>
+            </span>
+
+            <!-- Animated Staggered Headline (Orders 1, 2, 3, 4 strictly sequential) -->
+            <h2 class="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-[1.05] tracking-tight mb-5 text-ink">
+              <span data-cms="founderLine1" class="scroll-reveal-item block" data-reveal-order="1">HI, MY NAME IS</span>
+              <span data-cms="founderName" class="scroll-reveal-item block text-emerald-600 underline decoration-4 decoration-emerald-500 underline-offset-4" data-reveal-order="2">RAUSHAN KUMAR.</span>
+              <span data-cms="founderLine3" class="scroll-reveal-item block mt-1" data-reveal-order="3">I AM THE FOUNDER OF</span>
+              <span data-cms="founderLine4" class="scroll-reveal-item block text-zinc-900" data-reveal-order="4">NEO GEN INNOVATORS.</span>
+            </h2>
+
+            <!-- Concise Philosophy (Order 6) -->
+            <p data-cms="founderQuote" class="scroll-reveal-item font-mono text-xs sm:text-sm leading-relaxed text-ink/80 font-medium mb-6" data-reveal-order="6">
+              "We don't build slide decks or pitch imaginary AI wrappers. At Neo Gen Innovators, our mission is to unite passionate builders across India to solder custom microcontrollers, write bare-metal RTOS firmware, and deploy quantized neural models directly onto physical silicon."
+            </p>
+
+            <!-- Founder Signature Bar (Order 7) -->
+            <div class="scroll-reveal-item pt-3 flex items-center justify-between border-t-2 border-ink/15" data-reveal-order="7">
+              <div>
+                <div data-cms="founderSigName" class="font-sans font-black text-base uppercase text-ink tracking-tight">Raushan Kumar</div>
+                <div data-cms="founderSigTitle" class="font-mono text-[11px] text-emerald-600 font-bold uppercase tracking-wider">FOUNDER &amp; CHIEF ARCHITECT — NEO GEN INNOVATORS</div>
+              </div>
+              <span data-cms="founderBadge" class="font-mono text-[10px] font-bold px-2.5 py-1 bg-ink text-white rounded shadow-[2px_2px_0_0_#00e599]">
+                DIRECTOR
+              </span>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN: Raushan Kumar Avatar (Animated Order 5) -->
+          <div class="lg:col-span-5 flex justify-center items-center">
+            <div class="scroll-reveal-item relative w-64 sm:w-72 md:w-80 group" data-reveal-order="5">
+              <div class="absolute inset-0 bg-emerald-500/15 rounded-2xl blur-xl transform group-hover:scale-105 transition-transform pointer-events-none"></div>
+              
+              <div class="relative z-10 rounded-2xl bg-zinc-950 p-2.5 pb-2 border-3 border-ink shadow-[8px_8px_0_0_var(--ink)]">
+                <div class="rounded-xl overflow-hidden bg-black max-h-[360px] sm:max-h-[400px] flex items-center justify-center">
+                  <img data-cms="founderAvatarUrl" src="raushan-avatar.png" alt="Raushan Kumar - Founder of Neo Gen Innovators" class="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300">
+                </div>
+                
+                <div class="py-2 px-2.5 flex items-center justify-between text-xs font-mono font-bold text-white bg-zinc-950">
+                  <span class="text-emerald-400 flex items-center gap-1.5 text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                    <span data-cms="founderSigName">RAUSHAN KUMAR</span>
+                  </span>
+                  <span data-cms="founderBadge" class="text-zinc-400 uppercase text-[10px] tracking-wider">FOUNDER</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= WHAT WE ACTUALLY DO SECTION ================= -->
+  <section class="py-24 px-6 sm:px-12 bg-cream text-ink border-b-3 border-ink">
+    
+    <div class="max-w-6xl mx-auto">
+      
+      <span class="font-mono text-xs font-bold text-burgundy tracking-[0.2em] block mb-3 uppercase">
+        §02 — WHAT WE DO
+      </span>
+      <h2 class="font-display text-5xl sm:text-7xl md:text-8xl uppercase leading-[0.88] tracking-tight mb-16">
+        WHAT WE ACTUALLY DO
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Track 01 -->
+        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
+          <span class="font-mono text-xs font-bold text-burgundy">01 // PROTOTYPING</span>
+          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">HARDWARE SPRINTS</h3>
+          <p class="font-mono text-xs text-ink/80 leading-relaxed">
+            High-cadence 48-hour sprints with 3D printers, oscilloscope benches, soldering irons, and custom ESP32/RP2040 breakout boards.
+          </p>
+        </div>
+
+        <!-- Track 02 -->
+        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
+          <span class="font-mono text-xs font-bold text-blue">02 // SILICON</span>
+          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">AI &amp; EDGE LABS</h3>
+          <p class="font-mono text-xs text-ink/80 leading-relaxed">
+            Deploying quantized TinyML computer vision models onto ultra-low power ARM microcontrollers without relying on cloud APIs.
+          </p>
+        </div>
+
+        <!-- Track 03 -->
+        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
+          <span class="font-mono text-xs font-bold text-slime">03 // AUTONOMY</span>
+          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">AUTONOMOUS SYSTEMS</h3>
+          <p class="font-mono text-xs text-ink/80 leading-relaxed">
+            Ground-up autonomous rovers, flight-controller firmware, and mesh communications built from raw carbon fiber and silicon.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= VOICES FROM THE CREW ================= -->
+  <section class="py-24 px-6 sm:px-12 bg-paper text-ink border-b-3 border-ink">
+    
+    <div class="max-w-6xl mx-auto">
+      
+      <span class="font-mono text-xs font-bold text-burgundy tracking-[0.2em] block mb-3 uppercase">
+        §03 — VOICES FROM THE CREW
+      </span>
+      <h2 class="font-display text-5xl sm:text-7xl uppercase leading-none tracking-tight mb-16">
+        BUILT BY BUILDERS.
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <div class="border-3 border-ink bg-white p-6 sm:p-8 shadow-[6px_6px_0_0_var(--border-ink)]">
+          <p class="font-serif text-lg sm:text-xl leading-snug mb-6 text-ink">
+            "Before Neo Gen, all tech events were just web-apps and presentation slides. Here we built an entire LoRa-based environmental sensor grid that runs 6 months on a single 18650 cell."
+          </p>
+          <div class="flex items-center justify-between border-t-2 border-ink/20 pt-4">
+            <div>
+              <span class="font-sans font-black text-sm uppercase block">AARAV SHARMA</span>
+              <span class="font-mono text-[10px] text-ink/60 uppercase">HARDWARE LEAD — DELHI</span>
+            </div>
+            <span class="font-mono text-xs font-bold text-burgundy">[ 17 YRS OLD ]</span>
+          </div>
+        </div>
+
+        <div class="border-3 border-ink bg-white p-6 sm:p-8 shadow-[6px_6px_0_0_var(--border-ink)]">
+          <p class="font-serif text-lg sm:text-xl leading-snug mb-6 text-ink">
+            "We soldered our own boards, wrote bare-metal drivers, and launched a prototype that got adopted by our college lab. Pure shipping velocity."
+          </p>
+          <div class="flex items-center justify-between border-t-2 border-ink/20 pt-4">
+            <div>
+              <span class="font-sans font-black text-sm uppercase block">PRIYA NAIR</span>
+              <span class="font-mono text-[10px] text-ink/60 uppercase">FIRMWARE DEV — BENGALURU</span>
+            </div>
+            <span class="font-mono text-xs font-bold text-blue">[ 18 YRS OLD ]</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ================= RETRO BRUTALIST FOOTER ================= -->
+  <footer class="py-16 px-6 sm:px-12 bg-ink text-paper border-t-3 border-ink">
+    
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      
+      <div>
+        <div class="flex items-baseline mb-2">
+          <span class="font-sans font-black text-3xl tracking-tighter text-paper">NEO GEN</span>
+          <span class="font-sans font-black text-3xl tracking-tighter text-cyan-300 ml-2">INNOVATORS</span>
+          <span class="font-sans font-black text-xs text-cyan-400 ml-1">TM</span>
+        </div>
+        <p class="font-mono text-xs text-paper/60 uppercase tracking-widest">
+          FOUNDED BY RAUSHAN KUMAR // HARDWARE FOR INNOVATORS
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="#hero" class="bnb-btn bg-paper text-ink h-9 px-4 text-xs font-bold">
+          ↑ TOP
+        </a>
+        <a href="team.html" class="bnb-btn bnb-btn-cyan h-9 px-5 text-xs font-bold">
+          JOIN NETWORK →
+        </a>
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ================= FULLSCREEN CINEMA MODAL ================= -->
+  <div id="cinema-modal" class="fixed inset-0 z-[999] opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4 sm:p-8">
+    <!-- Backdrop -->
+    <div id="cinema-backdrop" class="absolute inset-0 bg-black/95 backdrop-blur-md"></div>
+
+    <!-- Modal Box -->
+    <div class="relative z-10 w-full max-w-5xl rounded-none border-3 border-paper bg-ink shadow-[12px_12px_0_0_var(--cyan)] flex flex-col overflow-hidden">
+      <!-- Modal Titlebar -->
+      <div class="flex items-center justify-between px-4 py-3 bg-ink border-b-3 border-paper text-paper font-mono font-bold">
+        <div class="flex items-center gap-2">
+          <span id="modal-close-dot" class="w-3.5 h-3.5 rounded-full bg-burgundy cursor-pointer hover:opacity-80" title="Close"></span>
+          <span class="w-3.5 h-3.5 rounded-full bg-warm"></span>
+          <span class="w-3.5 h-3.5 rounded-full bg-slime"></span>
+          <span class="ml-2 text-xs uppercase tracking-[0.14em]">NEO GEN INNOVATORS // THE DOCUMENTARY</span>
+        </div>
+        <button id="modal-close-btn" class="font-mono text-xs font-bold text-paper border border-paper px-2 py-0.5 hover:bg-paper hover:text-ink transition-colors cursor-pointer">
+          [ ESC / CLOSE ✕ ]
+        </button>
+      </div>
+
+      <!-- Full Video Player Container -->
+      <div class="relative w-full aspect-video bg-black flex items-center justify-center">
+        <iframe id="cinema-modal-iframe" class="w-full h-full block border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // --- 1. RETRO SFX AUDIO ENGINE ---
+    class RetroSoundFX {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playBip(freq = 640, duration = 0.08) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        if (this.ctx.state === 'suspended') this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      }
+    }
+    const sound = new RetroSoundFX();
+
+    // Sound toggle
+    const soundToggle = document.getElementById('sound-toggle-btn');
+    const soundLabel = document.getElementById('sound-label');
+    if (soundToggle) {
+      soundToggle.addEventListener('click', () => {
+        sound.enabled = !sound.enabled;
+        soundLabel.innerText = sound.enabled ? 'SOUND' : 'MUTED';
+        soundToggle.style.opacity = sound.enabled ? '1' : '0.5';
+        if (sound.enabled) sound.playBip(880, 0.1);
+      });
+    }
+
+    // --- 2. THREE.JS ISOMETRIC 3D BLACK & TITANIUM RUBIK'S CUBE ---
+    class IsometricRubiksCube {
+      constructor(canvasId) {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+        this.camera.position.set(4.2, 3.2, 5.0);
+        this.camera.lookAt(0, 0, 0);
+
+        this.renderer = new THREE.WebGLRenderer({
+          canvas: this.canvas,
+          alpha: true,
+          antialias: true,
+        });
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        this.group = new THREE.Group();
+        this.scene.add(this.group);
+
+        // Lighting
+        const ambient = new THREE.AmbientLight(0xffffff, 1.2);
+        this.scene.add(ambient);
+
+        const keyLight = new THREE.DirectionalLight(0xffffff, 3.8);
+        keyLight.position.set(7, 10, 8);
+        this.scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0x93c5fd, 2.2);
+        fillLight.position.set(-6, -4, -6);
+        this.scene.add(fillLight);
+
+        // Materials: Pure Obsidian & Dark Titanium with White Line Edges
+        const cubeMat = new THREE.MeshStandardMaterial({
+          color: 0x12151e,
+          metalness: 0.94,
+          roughness: 0.16,
+        });
+
+        const edgeMat = new THREE.LineBasicMaterial({
+          color: 0xffffff,
+          linewidth: 2,
+        });
+
+        const subSize = 0.66;
+        const gap = 0.06;
+        const offset = subSize + gap;
+        const geo = new THREE.BoxGeometry(subSize, subSize, subSize);
+        const edgesGeo = new THREE.EdgesGeometry(geo);
+
+        for (let x = -1; x <= 1; x++) {
+          for (let y = -1; y <= 1; y++) {
+            for (let z = -1; z <= 1; z++) {
+              if (x === 0 && y === 0 && z === 0) continue;
+              const mesh = new THREE.Mesh(geo, cubeMat);
+              const wire = new THREE.LineSegments(edgesGeo, edgeMat);
+              mesh.add(wire);
+              mesh.position.set(x * offset, y * offset, z * offset);
+              this.group.add(mesh);
+            }
+          }
+        }
+
+        // Mouse Drag to Rotate
+        this.isDragging = false;
+        this.prevMouse = { x: 0, y: 0 };
+
+        const dom = this.canvas.parentElement;
+        dom.addEventListener('mousedown', (e) => {
+          this.isDragging = true;
+          this.prevMouse = { x: e.clientX, y: e.clientY };
+        });
+        window.addEventListener('mouseup', () => { this.isDragging = false; });
+        window.addEventListener('mousemove', (e) => {
+          if (this.isDragging) {
+            const dx = e.clientX - this.prevMouse.x;
+            const dy = e.clientY - this.prevMouse.y;
+            this.group.rotation.y += dx * 0.008;
+            this.group.rotation.x += dy * 0.008;
+            this.prevMouse = { x: e.clientX, y: e.clientY };
+          }
+        });
+
+        window.addEventListener('resize', () => this.onResize());
+        this.onResize();
+        this.animate();
+      }
+
+      onResize() {
+        if (!this.canvas || !this.canvas.parentElement) return;
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.camera.aspect = rect.width / rect.height;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(rect.width, rect.height);
+      }
+
+      animate() {
+        requestAnimationFrame(() => this.animate());
+        if (!this.isDragging) {
+          this.group.rotation.y += 0.006;
+          this.group.rotation.x += 0.003;
+        }
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    
+    // --- 3. POLAROID LINE CAROUSEL PHYSICS & CONTROLLER ---
+    const DEFAULT_POLAROID_SLIDES = [
+      {
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+        title: "Silicon Core V2",
+        caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint."
+      },
+      {
+        image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop",
+        title: "Autonomous Rover",
+        caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi."
+      },
+      {
+        image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop",
+        title: "LoRa Mesh Node",
+        caption: "Solar-powered environmental sensor grid running on ESP32."
+      },
+      {
+        image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
+        title: "Edge AI Vision",
+        caption: "Quantized neural model deployed on bare-metal ARM Cortex."
+      },
+      {
+        image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
+        title: "Maker Lab Night",
+        caption: "Teen builders shipping physical hardware at 3:00 AM."
+      },
+      {
+        image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
+        title: "Firmware Flash",
+        caption: "Zero-latency FreeRTOS sensor fusion testing."
+      }
+    ];
+
+    function wrap(i, n) { return n ? ((i % n) + n) % n : 0; }
+    function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+    function stringY(x, w, y0, sag) {
+      const t = clamp(x / w, 0, 1);
+      return y0 + 4 * sag * t * (1 - t);
+    }
+    function springStep(x, v, target, dt, k = 70) {
+      const c = 2 * Math.sqrt(k);
+      const nv = v + (k * (target - x) - c * v) * dt;
+      return [x + nv * dt, nv];
+    }
+    function swingStep(a, w, lineVel, dt, gain) {
+      const nw = w + (-38 * a - 4.2 * w + lineVel * 0.0034 * gain) * dt;
+      return [clamp(a + nw * dt, -0.6, 0.6), nw];
+    }
+    function nearestAt(off, spacing, n) {
+      return clamp(Math.round(off / spacing), 0, Math.max(0, n - 1));
+    }
+    function pad2(n) {
+      return n < 10 ? '0' + n : String(n);
+    }
+
+    class PolaroidLineCarousel {
+      constructor(rootId) {
+        this.root = document.getElementById(rootId);
+        if (!this.root) return;
+
+        this.path = document.getElementById('pl-wire-path');
+        this.cardsContainer = document.getElementById('pl-cards-container');
+        this.titleText = document.getElementById('pl-title-text');
+        this.subText = document.getElementById('pl-sub-text');
+        this.activeNum = document.getElementById('pl-active-num');
+        this.totalNum = document.getElementById('pl-total-num');
+        this.captionBox = document.getElementById('pl-caption-box');
+        this.prevBtn = document.getElementById('pl-prev-btn');
+        this.nextBtn = document.getElementById('pl-next-btn');
+
+        this.sag = 46;
+        this.swing = 1;
+        this.autoplayInterval = 4500;
+        this.cardWidth = 280;
+
+        this.loadSlides();
+        this.init();
+      }
+
+      loadSlides() {
+        try {
+          const stored = localStorage.getItem('neogen_polaroid_slides');
+          if (stored) {
+            this.slides = JSON.parse(stored);
+          } else {
+            this.slides = [...DEFAULT_POLAROID_SLIDES];
+          }
+        } catch (e) {
+          this.slides = [...DEFAULT_POLAROID_SLIDES];
+        }
+        if (!this.slides.length) this.slides = [...DEFAULT_POLAROID_SLIDES];
+      }
+
+      init() {
+        this.n = this.slides.length;
+        this.active = 0;
+        this.activeRef = 0;
+        this.cards = [];
+        this.sim = { off: 0, vel: 0, target: 0, a: new Array(this.n).fill(0), w: new Array(this.n).fill(0) };
+        this.drag = null;
+        this.lastTouch = performance.now();
+        this.size = { w: 1200, h: 700, cw: this.cardWidth };
+        this.spacing = this.size.cw * 1.08;
+
+        this.buildCardsDOM();
+        this.updateDimensions();
+        this.setupEvents();
+        this.startLoop();
+        this.startAutoplay();
+      }
+
+      buildCardsDOM() {
+        this.cardsContainer.innerHTML = '';
+        this.cards = [];
+
+        this.slides.forEach((s, i) => {
+          const el = document.createElement('div');
+          el.className = 'pl-card';
+          el.setAttribute('data-i', i);
+          el.setAttribute('data-on', i === 0 ? '1' : '0');
+          el.innerHTML = `
+            <div class="pl-print">
+              <div class="pl-shot">
+                <img src="${s.image || ''}" alt="${s.title || ''}" draggable="false" onerror="this.src='https://placehold.co/300x300/18181b/ffffff?text=Neo+Gen';">
+              </div>
+              <div class="pl-note">${s.title || 'Untitled'}</div>
+            </div>
+            <div class="pl-peg"></div>
+          `;
+          this.cardsContainer.appendChild(el);
+          this.cards.push(el);
+        });
+
+        if (this.totalNum) this.totalNum.innerText = pad2(this.n);
+        this.updateCaption(0);
+      }
+
+      updateDimensions() {
+        const r = this.root.getBoundingClientRect();
+        const cw = Math.round(Math.max(160, Math.min(this.cardWidth, r.width * 0.44, r.height * 0.45)));
+        this.size = { w: r.width, h: r.height, cw };
+        this.spacing = cw * 1.08;
+        this.root.style.setProperty('--pl-cw', cw + 'px');
+      }
+
+      goTo(i) {
+        this.sim.target = clamp(i, 0, this.n - 1) * this.spacing;
+      }
+
+      step(dir) {
+        this.lastTouch = performance.now();
+        this.goTo(clamp(this.activeRef + dir, 0, this.n - 1));
+      }
+
+      updateCaption(i) {
+        const s = this.slides[i] || {};
+        if (this.titleText) this.titleText.innerText = s.title || '';
+        if (this.subText) this.subText.innerText = s.caption || '';
+        if (this.activeNum) this.activeNum.innerText = pad2(i + 1);
+        if (this.captionBox) {
+          this.captionBox.style.animation = 'none';
+          void this.captionBox.offsetHeight;
+          this.captionBox.style.animation = '';
+        }
+      }
+
+      setupEvents() {
+        window.addEventListener('resize', () => this.updateDimensions());
+
+        // Storage listener for Admin sync
+        window.addEventListener('storage', () => {
+          this.loadSlides();
+          this.n = this.slides.length;
+          this.buildCardsDOM();
+          this.updateDimensions();
+        });
+
+        // Pointer Drag
+        this.root.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('.pl-bar') || e.target.closest('a') || e.target.closest('button')) return;
+          this.lastTouch = performance.now();
+          this.drag = { x: e.clientX, off: this.sim.off, lx: e.clientX, lt: e.timeStamp, v: 0, moved: false };
+        });
+
+        window.addEventListener('pointermove', (e) => {
+          if (!this.drag) return;
+          const dx = e.clientX - this.drag.x;
+          if (!this.drag.moved && Math.abs(dx) > 5) {
+            this.drag.moved = true;
+            this.root.setAttribute('data-drag', '1');
+            try { this.root.setPointerCapture(e.pointerId); } catch(_) {}
+          }
+          if (!this.drag.moved) return;
+          const dt = Math.max(1, e.timeStamp - this.drag.lt);
+          this.drag.v = 0.7 * ((e.clientX - this.drag.lx) / dt) + 0.3 * this.drag.v;
+          this.drag.lx = e.clientX;
+          this.drag.lt = e.timeStamp;
+          const max = (this.n - 1) * this.spacing;
+          let off = this.drag.off - dx;
+          if (off < 0) off *= 0.35;
+          if (off > max) off = max + (off - max) * 0.35;
+          this.sim.off = off;
+        });
+
+        window.addEventListener('pointerup', (e) => {
+          if (!this.drag) return;
+          const d = this.drag;
+          this.drag = null;
+          this.lastTouch = performance.now();
+          this.root.removeAttribute('data-drag');
+
+          if (d.moved) {
+            this.sim.vel = -d.v * 1000;
+            this.goTo(nearestAt(this.sim.off - d.v * 180, this.spacing, this.n));
+            return;
+          }
+
+          // Click print to center
+          const card = e.target.closest('[data-i]');
+          if (card) {
+            const idx = Number(card.getAttribute('data-i'));
+            this.goTo(idx);
+          }
+        });
+
+        // Buttons
+        if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.step(-1));
+        if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.step(1));
+
+        // Keyboard
+        this.root.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') { this.step(1); e.preventDefault(); }
+          else if (e.key === 'ArrowLeft') { this.step(-1); e.preventDefault(); }
+        });
+      }
+
+      startAutoplay() {
+        setInterval(() => {
+          if (document.hidden || this.drag || performance.now() - this.lastTouch < this.autoplayInterval) return;
+          this.goTo(this.activeRef >= this.n - 1 ? 0 : this.activeRef + 1);
+        }, this.autoplayInterval);
+      }
+
+      startLoop() {
+        let prev = performance.now();
+        const frame = (now) => {
+          const dt = Math.min(0.033, (now - prev) / 1000);
+          prev = now;
+
+          const { w, h, cw } = this.size;
+          const y0 = Math.max(45, h * 0.22);
+          const S = this.sim;
+          const g = this.swing;
+
+          let lineVel = 0;
+          if (this.drag && this.drag.moved) {
+            lineVel = this.drag.v * 1000;
+          } else {
+            const before = S.off;
+            const [nextOff, nextVel] = springStep(S.off, S.vel, S.target, dt);
+            S.off = nextOff;
+            S.vel = nextVel;
+            lineVel = -(S.off - before) / Math.max(dt, 1e-3);
+          }
+
+          const near = nearestAt(S.off, this.spacing, this.n);
+
+          for (let i = 0; i < this.n; i++) {
+            const el = this.cards[i];
+            if (!el) continue;
+            const x = w / 2 + i * this.spacing - S.off;
+            if (x < -cw * 1.5 || x > w + cw * 1.5) {
+              el.style.visibility = 'hidden';
+              continue;
+            }
+            el.style.visibility = 'visible';
+
+            let a = S.a[i] || 0;
+            let av = S.w[i] || 0;
+            const [na, nav] = swingStep(a, av, lineVel, dt, g);
+            a = na;
+            av = nav;
+            if (g) a += Math.sin(now / 1300 + i * 1.7) * 0.0009 * g;
+            S.a[i] = a;
+            S.w[i] = av;
+
+            const y = stringY(x, w, y0, this.sag) - 6;
+            el.style.transform = `translate(${(x - cw / 2).toFixed(1)}px,${y.toFixed(1)}px) rotate(${a.toFixed(4)}rad)`;
+            el.style.zIndex = String(i === near ? this.n + 1 : this.n - Math.abs(i - near));
+            el.setAttribute('data-on', i === near ? '1' : '0');
+          }
+
+          if (this.path) {
+            this.path.setAttribute('d', `M0 ${y0} Q${w / 2} ${y0 + 2 * this.sag} ${w} ${y0}`);
+          }
+
+          if (near !== this.activeRef) {
+            this.activeRef = near;
+            this.active = near;
+            this.updateCaption(near);
+          }
+
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      }
+    }
+
+    // ================= STICKY SCROLL REVEAL ANIMATION (MEET THE FOUNDER) =================
+    function initScrollReveal() {
+      const section = document.getElementById('who-we-are');
+      if (!section) return;
+
+      const items = section.querySelectorAll('.scroll-reveal-item');
+      if (!items.length) return;
+
+      let ticking = false;
+
+      function updateReveal() {
+        const rect = section.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const totalStickyDistance = section.offsetHeight - vh;
+
+        // If user hasn't scrolled anywhere near this section yet
+        if (rect.top > vh * 0.4) {
+          items.forEach(item => item.classList.remove('revealed'));
+          return;
+        }
+
+        // When approaching top (from rect.top = vh * 0.4 down to rect.top = 0)
+        // Reveal order 0 (§01 — MEET THE FOUNDER) so it's ready when pinned begins
+        const order0 = section.querySelector('[data-reveal-order="0"]');
+        if (order0) order0.classList.add('revealed');
+
+        // Progress inside the pinned 240vh scroll track:
+        // rect.top is 0 when pinned begins, and goes down to -totalStickyDistance
+        let progress = 0;
+        if (rect.top <= 0) {
+          progress = Math.min(1, Math.max(0, (-rect.top) / totalStickyDistance));
+        }
+
+        // Distinct, widely-spaced thresholds so lines strictly reveal ONE BY ONE on scroll:
+        // Order 1 ("HI, MY NAME IS")         -> at progress >= 0.08
+        // Order 2 ("RAUSHAN KUMAR.")         -> at progress >= 0.24
+        // Order 3 ("I AM THE FOUNDER OF")    -> at progress >= 0.42
+        // Order 4 ("NEO GEN INNOVATORS.")    -> at progress >= 0.60
+        // Order 5 (Avatar Card on right)     -> at progress >= 0.30
+        // Order 6 (Philosophy quote)         -> at progress >= 0.75
+        // Order 7 (Founder signature/badge)  -> at progress >= 0.88
+        const stepThresholds = {
+          0: 0.0,
+          1: 0.08,
+          2: 0.24,
+          3: 0.42,
+          4: 0.60,
+          5: 0.30,
+          6: 0.75,
+          7: 0.88
+        };
+
+        items.forEach(item => {
+          const order = parseInt(item.getAttribute('data-reveal-order') || '0', 10);
+          const requiredProgress = stepThresholds[order] !== undefined ? stepThresholds[order] : 0.0;
+          if (progress >= requiredProgress) {
+            item.classList.add('revealed');
+          } else {
+            item.classList.remove('revealed');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateReveal();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+
+      // Run on initial load and resize
+      updateReveal();
+      window.addEventListener('resize', updateReveal, { passive: true });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      new IsometricRubiksCube('hero-cube-canvas');
+      new PolaroidLineCarousel('polaroid-carousel-root');
+      initScrollReveal();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Temporary migration & analysis scripts
+analyze_*.js
+apply_*.js
+build_*.js
+check_*.js
+clean_*.js
+compact_*.js
+extract_*.js
+find_*.js
+inspect_*.js
+locate_*.js
+parse_*.js
+read_*.js
+test_*.js
+update_*.js
+verify_*.js
+remove_*.ps1
+
+# Temporary previews & backups
+preview_*.png
+*_backup*.html
+gobitsnbytes_raw.html
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
