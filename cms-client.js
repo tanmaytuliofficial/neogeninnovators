@@ -48,12 +48,12 @@
     const has4 = !!(data && data.teamStat4Num && data.teamStat4Num.trim());
 
     if (!has3 && !has4) {
-      strip.className = "grid grid-cols-2 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md max-w-2xl";
+      strip.className = "grid grid-cols-2 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md w-full max-w-xl shrink-0";
       c3.classList.add('hidden');
       c4.classList.add('hidden');
       c2.classList.remove('border-r', 'border-zinc-800/60');
     } else {
-      strip.className = "grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md";
+      strip.className = "grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md w-full max-w-3xl";
       c2.classList.add('border-r', 'border-zinc-800/60');
       if (has3) c3.classList.remove('hidden'); else c3.classList.add('hidden');
       if (has4) c4.classList.remove('hidden'); else c4.classList.add('hidden');
