@@ -230,7 +230,7 @@
     </div>
 
     <!-- Team Cards Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div id="team-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
       <!-- Card 1: Firmware Lead -->
       <div class="p-6 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 hover:border-white/30 hover:bg-zinc-900/60 transition-all duration-300 group flex flex-col justify-between">
@@ -506,5 +506,76 @@
     </div>
   </footer>
 
+  <!-- Universal CMS Sync Client -->
+  <script src="cms-client.js"></script>
+  <script>
+    function renderDynamicTeam(members) {
+      const container = document.getElementById('team-grid-container');
+      if (!container || !members || !members.length) return;
+      container.innerHTML = members.map(m => `
+        <div class="p-6 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 hover:border-white/30 hover:bg-zinc-900/60 transition-all duration-300 group flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-700 group-hover:border-white/40 flex items-center justify-center font-mono font-bold text-white text-base">
+                ${m.initials || (m.name ? m.name.substring(0, 2).toUpperCase() : 'NG')}
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold bg-white/10 text-zinc-200 border border-white/15">
+                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                ${m.domain || 'BUILDER'}
+              </span>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-bold text-white group-hover:text-zinc-200 transition-colors">${m.name}</h3>
+              <p class="font-mono text-xs text-zinc-400">${m.role}</p>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed">
+              ${m.bio}
+            </p>
+
+            <div class="space-y-1.5 pt-2">
+              <div class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">ACTIVE SHIPMENT</div>
+              <div class="text-xs font-mono text-white bg-zinc-900/80 px-2.5 py-1.5 rounded border border-zinc-800 truncate">
+                ${m.shipment || 'Hardware Prototype'}
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-5 mt-5 border-t border-zinc-800/60 font-mono text-xs">
+            <span class="text-zinc-500">${m.stack || 'Hardware • Embedded'}</span>
+            <a href="${m.link || '#'}" target="_blank" rel="noopener noreferrer" class="text-zinc-300 hover:text-white hover:underline font-bold">Profile →</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function initTeamSync() {
+      try {
+        const cached = localStorage.getItem('neogen_team_members');
+        if (cached) renderDynamicTeam(JSON.parse(cached));
+      } catch (e) {}
+
+      fetch('/api/content')
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.teamMembers && data.teamMembers.length) {
+            renderDynamicTeam(data.teamMembers);
+            localStorage.setItem('neogen_team_members', JSON.stringify(data.teamMembers));
+          }
+        })
+        .catch(() => {});
+
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'neogen_team_members' && e.newValue) {
+          try {
+            renderDynamicTeam(JSON.parse(e.newValue));
+          } catch (err) {}
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initTeamSync);
+  </script>
 </body>
 </html>

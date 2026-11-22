@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" class="dark h-full bg-[#08090d]">
+<html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeoGen Admin Console | Universal Content & System Architecture</title>
-  
-  <!-- Google Fonts: Plus Jakarta Sans (Modern Clean) + JetBrains Mono (Tech) -->
+  <title>NeoGen Admin Console | Master Website & System Control</title>
+  <link rel="icon" href="cube.png" type="image/png">
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Yellowtail&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Yellowtail&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,14 +24,11 @@
             script: ['"Yellowtail"', 'cursive'],
           },
           colors: {
-            brand: '#ffffff',
-            'brand-dark': '#d4d4d8',
             obsidian: {
-              DEFAULT: '#08090d',
-              surface: '#0d0f15',
-              card: '#12141c',
-              elevated: '#171a25',
-              border: '#1f2330'
+              DEFAULT: '#06070a',
+              surface: '#0c0e14',
+              card: '#10131b',
+              border: 'rgba(255, 255, 255, 0.08)'
             }
           }
         }
@@ -39,539 +37,774 @@
   </script>
 
   <style>
-    /* Premium Obsidian Matrix Grid Background */
-    .admin-grid-bg {
-      background-color: #08090d;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 229, 153, 0.07) 0%, transparent 60%),
-        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-      background-size: 100% 100%, 32px 32px, 32px 32px;
+    body {
+      background-color: #06070a;
+      color: #e4e4e7;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
-
-    /* Custom Scrollbars */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+    input, textarea, select {
+      font-family: 'JetBrains Mono', monospace;
     }
-    ::-webkit-scrollbar-track {
-      background: #08090d;
+    /* Subtle dot grid */
+    .bg-grid-pattern {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
     }
-    ::-webkit-scrollbar-thumb {
-      background: #1f2330;
-      border-radius: 9999px;
+    .shake-animation {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #52525b;
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
     }
   </style>
-
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- Universal CMS Client -->
-  <script src="cms-client.js"></script>
 </head>
 
-<body class="admin-grid-bg text-zinc-100 font-sans min-h-screen flex flex-col antialiased selection:bg-white selection:text-black">
+<body class="min-h-screen bg-[#06070a] text-zinc-100 flex flex-col selection:bg-white selection:text-black">
 
-  <!-- ================= TOP NAVIGATION BAR ================= -->
-  <header class="border-b border-white/[0.08] bg-[#090a0f]/85 backdrop-blur-2xl sticky top-0 z-40 px-6 py-3.5 flex items-center justify-between">
-    
-    <!-- Left: Brand Breadcrumb & Back Link -->
-    <div class="flex items-center gap-4">
-      <a href="index.html" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-white transition-all text-xs font-mono group">
-        <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-        <span>Exit to Website</span>
-      </a>
-
-      <div class="h-4 w-px bg-white/10 hidden sm:block"></div>
-
-      <div class="flex items-center gap-2">
-        <span class="font-mono font-bold text-sm text-zinc-200">&gt;_</span>
-        <span class="font-bold text-sm tracking-tight text-white">Neo<span class="text-zinc-200">Gen</span></span>
-        <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-white/5 text-zinc-200 border border-white/20">
-          ADMIN CONSOLE v2.4
-        </span>
-      </div>
-    </div>
-
-    <!-- Right: Status Indicator & Identity -->
-    <div class="flex items-center gap-3.5">
-      <!-- Live Sync Pill -->
-      <div id="connection-pill" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] text-[11px] font-mono text-zinc-400">
-        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-        <span id="connection-status-text">Live Sync Active</span>
-      </div>
-
-      <!-- Founder Avatar Chip -->
-      <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/[0.03] border border-white/[0.08]">
-        <img src="raushan-avatar.png" alt="Raushan Kumar" class="w-5 h-5 rounded-full object-cover object-top border border-white/30">
-        <span class="text-xs font-medium text-zinc-200">Raushan Kumar</span>
-      </div>
-
-      <!-- Preview Live Site Link -->
-      <a href="index.html" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold text-zinc-200 bg-white/5 border border-white/20 hover:bg-white/15 transition-all">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-        <span>Live Site ↗</span>
-      </a>
-    </div>
-
-  </header>
-
-
-  <!-- ================= MAIN DASHBOARD BODY ================= -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-7">
-
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed top-20 right-6 z-50 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none p-4 rounded-2xl bg-[#0e1118]/95 backdrop-blur-xl border border-white/25 text-zinc-200 shadow-2xl flex items-center gap-3 font-mono text-xs shadow-black/80">
-      <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
-      <span id="toast-msg">Settings saved!</span>
-    </div>
-
-    <!-- Segmented Tab Navigation Bar -->
-    <div class="flex items-center p-1.5 rounded-2xl bg-[#0d0f16]/90 border border-white/[0.08] backdrop-blur-xl gap-1.5 font-mono text-xs overflow-x-auto">
+  <!-- ========================================================================= -->
+  <!-- 1. PASSWORD SECURITY GATE (Shown when not authenticated)                  -->
+  <!-- ========================================================================= -->
+  <div id="admin-auth-gate" class="fixed inset-0 z-[9999] bg-[#06070a] bg-grid-pattern flex items-center justify-center p-4 transition-all duration-300">
+    <div id="auth-box" class="w-full max-w-md bg-[#0c0e14]/95 border border-white/15 rounded-3xl p-8 sm:p-10 shadow-[0_25px_80px_rgba(0,0,0,0.9)] backdrop-blur-2xl text-center space-y-6 relative overflow-hidden">
       
-      <!-- Tab 1: Universal Texts -->
-      <button class="tab-btn active px-4 py-2 rounded-xl font-semibold flex items-center gap-2 transition-all bg-white/10 text-zinc-200 border border-white/20 shadow-[0_0_15px_rgba(255, 255, 255, 0.06)]" data-tab="tab-content">
-        <svg class="w-4 h-4 text-zinc-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-        <span>Website Content &amp; Quotes</span>
-      </button>
+      <!-- Ambient corner glow -->
+      <div class="absolute -top-24 -left-24 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Tab 2: Hanging Polaroid Gallery -->
-      <button class="tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent" data-tab="tab-hanger">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-        <span>Polaroid Hanger Gallery</span>
-      </button>
+      <!-- Icon & Header -->
+      <div class="space-y-3">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 mx-auto flex items-center justify-center text-2xl shadow-inner">
+          🔒
+        </div>
+        <div>
+          <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-zinc-400 uppercase block mb-1">
+            NEOGEN // RESTRICTED ACCESS
+          </span>
+          <h1 class="text-2xl font-black text-white tracking-tight">Master Admin Console</h1>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed max-w-xs mx-auto">
+          Please enter the master administrative key to manage live projects, content, and team architecture.
+        </p>
+      </div>
 
-      <!-- Tab 3: Member Management -->
-      <button class="tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent" data-tab="tab-users">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-        <span>Builders &amp; Roles</span>
-      </button>
-
-      <!-- Tab 4: System Config -->
-      <button class="tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent" data-tab="tab-config">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-        <span>Database &amp; Keys</span>
-      </button>
-
-    </div>
-
-
-    <!-- ========================================================================= -->
-    <!-- TAB 1: UNIVERSAL WEBSITE CONTENT & TEXTS EDITOR                           -->
-    <!-- ========================================================================= -->
-    <div id="tab-content" class="tab-content space-y-7">
-      
-      <!-- Top Action Bar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0d0f16]/90 border border-white/[0.08] backdrop-blur-xl">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-            <h2 class="text-lg font-bold text-white tracking-tight">Universal Content Engine</h2>
-            <span class="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">REAL-TIME SYNC</span>
+      <!-- Form -->
+      <form id="auth-form" onsubmit="event.preventDefault(); handleAdminLogin();" class="space-y-4 text-left">
+        <div>
+          <label class="block text-[11px] font-mono text-zinc-300 mb-1.5 flex items-center justify-between">
+            <span>MASTER PASSWORD</span>
+            <span class="text-[10px] text-zinc-500 font-mono">SECURE ACCESS</span>
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="admin-pass-input" 
+              placeholder="••••••••••••" 
+              autofocus
+              autocomplete="current-password"
+              class="w-full bg-[#08090d] border border-white/15 rounded-xl px-4 py-3 text-sm text-white font-mono placeholder-zinc-600 focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/20 transition-all pr-10"
+            />
+            <button 
+              type="button" 
+              id="btn-toggle-pass" 
+              onclick="togglePassVisibility()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors p-1"
+              title="Toggle visibility"
+            >
+              👁️
+            </button>
           </div>
-          <p class="text-xs text-zinc-400">
-            Edit headlines, quotes, manifestos, stats, and buttons. Updates persist permanently and broadcast live to all active pages.
+          <p id="auth-error-msg" class="text-xs font-mono text-red-400 mt-2 hidden flex items-center gap-1.5">
+            <span>✕</span>
+            <span>Incorrect master password. Access denied.</span>
           </p>
         </div>
-        
-        <div class="flex items-center gap-3 shrink-0">
-          <button id="btn-reset-content" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-medium text-zinc-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.1] transition-all">
-            Reset Defaults
-          </button>
-          <button id="btn-save-content" type="button" class="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 text-black shadow-[0_0_20px_rgba(255, 255, 255, 0.15)] hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 transition-all">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <span>Save All Changes</span>
-          </button>
-        </div>
-      </div>
 
-      <!-- Two-Column Cards Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        <!-- CARD 1: HERO & BRAND MESSAGING -->
-        <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 hover:border-white/[0.14] transition-all shadow-xl shadow-black/40">
-          <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-zinc-200 text-xs font-mono font-bold">01</span>
-              <div>
-                <h3 class="text-sm font-bold text-white tracking-tight">Hero &amp; Brand Messaging</h3>
-                <p class="text-[11px] text-zinc-400">Main landing page headline and introduction copy</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-zinc-500 uppercase">Home Page</span>
-          </div>
+        <button 
+          type="submit" 
+          id="btn-auth-submit"
+          class="w-full py-3.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.15)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer flex items-center justify-center gap-2"
+        >
+          <span>Unlock Admin Console →</span>
+        </button>
+      </form>
 
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Hero Tagline / Subtitle</span>
-                <span class="text-[10px] font-mono text-zinc-500">heroTagline</span>
-              </label>
-              <input id="cms_heroTagline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all">
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Terminal Box Headline</span>
-                <span class="text-[10px] font-mono text-zinc-500">heroBoxHeadline</span>
-              </label>
-              <input id="cms_heroBoxHeadline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all">
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Terminal Box Slogan</span>
-                <span class="text-[10px] font-mono text-zinc-500">heroBoxSubtitle</span>
-              </label>
-              <input id="cms_heroBoxSubtitle" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all">
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Hero Body Description</span>
-                <span class="text-[10px] font-mono text-zinc-500">heroDescription</span>
-              </label>
-              <textarea id="cms_heroDescription" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all leading-relaxed"></textarea>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3.5 pt-1">
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Primary CTA Button</label>
-                <input id="cms_heroCtaExplore" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Secondary CTA Button</label>
-                <input id="cms_heroCtaJourney" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD 2: FOUNDER (§01) & PHILOSOPHY MANIFESTO -->
-        <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 hover:border-white/[0.14] transition-all shadow-xl shadow-black/40">
-          <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-zinc-200 text-xs font-mono font-bold">02</span>
-              <div>
-                <h3 class="text-sm font-bold text-white tracking-tight">Founder Section (§01) &amp; Quotes</h3>
-                <p class="text-[11px] text-zinc-400">Sequential scroll reveal texts &amp; founder statement</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-zinc-500 uppercase">Section §01</span>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Section Number / Category Tag</span>
-                <span class="text-[10px] font-mono text-zinc-500">founderTag</span>
-              </label>
-              <input id="cms_founderTag" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all">
-            </div>
-
-            <!-- Staggered Headline Lines -->
-            <div class="grid grid-cols-2 gap-3.5">
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 1 (Intro)</label>
-                <input id="cms_founderLine1" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Founder Name (Line 2)</label>
-                <input id="cms_founderName" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-zinc-200 font-bold focus:outline-none focus:border-white/40">
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3.5">
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 3 (Role Intro)</label>
-                <input id="cms_founderLine3" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-              <div>
-                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 4 (Organization)</label>
-                <input id="cms_founderLine4" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
-                <span>Founder Philosophy / Manifesto Quote</span>
-                <span class="text-[10px] font-mono text-zinc-500">founderQuote</span>
-              </label>
-              <textarea id="cms_founderQuote" rows="4" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 focus:ring-1 focus:ring-white/10 transition-all leading-relaxed"></textarea>
-            </div>
-
-            <div class="grid grid-cols-3 gap-3">
-              <div>
-                <label class="block text-[10px] font-medium text-zinc-300 mb-1">Signature Name</label>
-                <input id="cms_founderSigName" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-              <div>
-                <label class="block text-[10px] font-medium text-zinc-300 mb-1">Role Title</label>
-                <input id="cms_founderSigTitle" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-              <div>
-                <label class="block text-[10px] font-medium text-zinc-300 mb-1">Badge Tag</label>
-                <input id="cms_founderBadge" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-[11px] font-medium text-zinc-300 mb-1">Avatar Graphic URL</label>
-              <input id="cms_founderAvatarUrl" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs font-mono text-zinc-300 focus:outline-none focus:border-white/40">
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD 3: TEAM PAGE (/team) TEXTS & METRIC STATS -->
-        <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 hover:border-white/[0.14] transition-all shadow-xl shadow-black/40">
-          <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-zinc-200 text-xs font-mono font-bold">03</span>
-              <div>
-                <h3 class="text-sm font-bold text-white tracking-tight">Dedicated Team Page &amp; Stats</h3>
-                <p class="text-[11px] text-zinc-400">Content for /team showcase and metric badges</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-zinc-500 uppercase">/team page</span>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Team Page Main Headline</label>
-              <input id="cms_teamHeroHeadline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Team Page Subtitle / Bio</label>
-              <textarea id="cms_teamHeroSubtitle" rows="2" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
-            </div>
-
-            <!-- 4 Metrics -->
-            <div class="grid grid-cols-2 gap-3.5">
-              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC STAT #1</span>
-                <input id="cms_teamStat1Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-200 font-mono font-bold" placeholder="1,200+">
-                <input id="cms_teamStat1Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Student Builders">
-              </div>
-
-              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC STAT #2</span>
-                <input id="cms_teamStat2Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="28+">
-                <input id="cms_teamStat2Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Hardware Sprints">
-              </div>
-
-              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC STAT #3</span>
-                <input id="cms_teamStat3Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-200 font-mono font-bold" placeholder="15+">
-                <input id="cms_teamStat3Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Silicon Tapeouts">
-              </div>
-
-              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC STAT #4</span>
-                <input id="cms_teamStat4Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="100%">
-                <input id="cms_teamStat4Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Student-Run & Open">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Team Founder Manifesto Statement</label>
-              <textarea id="cms_teamFounderManifesto" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- CARD 4: CALL TO ACTION & SITE FOOTER -->
-        <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 hover:border-white/[0.14] transition-all shadow-xl shadow-black/40">
-          <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
-            <div class="flex items-center gap-2.5">
-              <span class="w-6 h-6 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-zinc-200 text-xs font-mono font-bold">04</span>
-              <div>
-                <h3 class="text-sm font-bold text-white tracking-tight">Call-to-Action &amp; Footer</h3>
-                <p class="text-[11px] text-zinc-400">Community fellowship invitation and copyright line</p>
-              </div>
-            </div>
-            <span class="text-[10px] font-mono text-zinc-500 uppercase">Global</span>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Fellowship CTA Heading</label>
-              <input id="cms_ctaHeading" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Fellowship CTA Description</label>
-              <textarea id="cms_ctaBody" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
-            </div>
-
-            <div>
-              <label class="block text-xs font-medium text-zinc-300 mb-1.5">Footer Copyright Line</label>
-              <input id="cms_footerCopyright" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ========================================================================= -->
-    <!-- TAB 2: POLAROID HANGER GALLERY CONTROLLER                                  -->
-    <!-- ========================================================================= -->
-    <div id="tab-hanger" class="tab-content space-y-7 hidden">
-      
-      <!-- Top Action Bar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0d0f16]/90 border border-white/[0.08] backdrop-blur-xl">
-        <div class="space-y-1">
-          <div class="flex items-center gap-2.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
-            <h2 class="text-lg font-bold text-white tracking-tight">Polaroid Line Hanger Controller</h2>
-            <span class="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">PHYSICS SIMULATOR</span>
-          </div>
-          <p class="text-xs text-zinc-400">
-            Control the pictures, titles, and captions pegged to the sagging line carousel on the home page.
-          </p>
-        </div>
-        
-        <div class="flex items-center gap-3 shrink-0">
-          <button id="btn-add-polaroid" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] flex items-center gap-1.5 transition-all">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            <span>+ Add Print</span>
-          </button>
-          <button id="btn-reset-polaroids" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-medium text-zinc-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.1] transition-all">
-            Reset Defaults
-          </button>
-          <button id="btn-save-polaroids" type="button" class="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 text-black shadow-[0_0_20px_rgba(255, 255, 255, 0.15)] hover:scale-[1.02] flex items-center gap-2 transition-all">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            <span>Save Prints to Live Site</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Quick Info Strip -->
-      <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-zinc-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>Prints are distributed dynamically along the string and swing on realistic peg physics.</span>
-        </div>
-        <a href="index.html#gallery" target="_blank" class="text-zinc-200 hover:underline font-semibold ml-4 shrink-0">
-          Open Gallery Preview ↗
+      <!-- Footer back link -->
+      <div class="pt-2 border-t border-white/[0.06]">
+        <a href="index.html" class="font-mono text-xs text-zinc-500 hover:text-white transition-colors">
+          ← Return to Public Website
         </a>
       </div>
 
-      <!-- Dynamic Polaroid Cards List -->
-      <div id="polaroid-list-container" class="space-y-4">
-        <!-- Rendered via JS -->
-      </div>
-
     </div>
+  </div>
 
 
-    <!-- ========================================================================= -->
-    <!-- TAB 3: MEMBER DIRECTORY & ROLES                                           -->
-    <!-- ========================================================================= -->
-    <div id="tab-users" class="tab-content hidden space-y-6">
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN AUTHENTICATED DASHBOARD (Visible once unlocked)                   -->
+  <!-- ========================================================================= -->
+  <div id="admin-dashboard-root" class="hidden flex-1 flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 px-4 sm:px-8 py-3.5 bg-[#06070a]/90 backdrop-blur-xl border-b border-white/[0.08] flex items-center justify-between">
       
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0d0f16]/90 border border-white/[0.08] backdrop-blur-xl">
-        <div class="space-y-1">
-          <h2 class="text-lg font-bold text-white tracking-tight">Builder Directory &amp; Role Management</h2>
-          <p class="text-xs text-zinc-400">Manage builder profiles and approval status across the NeoGen network.</p>
+      <!-- Brand & Version -->
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-white transition-all text-xs font-mono group">
+          <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+          <span>Website</span>
+        </a>
+
+        <div class="h-4 w-px bg-white/10 hidden sm:block"></div>
+
+        <div class="flex items-center gap-2">
+          <span class="font-mono font-bold text-sm text-white">&gt;_</span>
+          <span class="font-bold text-sm tracking-tight text-white">NeoGen</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-white/10 text-white border border-white/20">
+            ADMIN CONSOLE
+          </span>
         </div>
+      </div>
+
+      <!-- Live Indicator, Live Site Link & Lock Button -->
+      <div class="flex items-center gap-3">
+        <!-- Live Sync Status -->
+        <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[11px] font-mono text-zinc-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Live Sync Active</span>
+        </div>
+
+        <!-- Live Site Preview Link -->
+        <a href="index.html" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold text-zinc-200 bg-white/5 border border-white/20 hover:bg-white/15 transition-all">
+          <span>Live Site ↗</span>
+        </a>
+
+        <!-- Lock Console Button -->
+        <button 
+          type="button" 
+          onclick="handleAdminLogout()" 
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold text-red-400 bg-red-950/40 border border-red-500/30 hover:bg-red-900/50 transition-all cursor-pointer"
+          title="Sign out and lock console"
+        >
+          <span>🔒 Lock</span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Main Dashboard Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-7">
+
+      <!-- Toast Notification Alert -->
+      <div id="toast" class="fixed top-20 right-6 z-50 transform transition-all duration-300 translate-y-[-20px] opacity-0 pointer-events-none p-4 rounded-2xl bg-[#0e1118]/95 backdrop-blur-xl border border-white/25 text-white shadow-2xl flex items-center gap-3 font-mono text-xs shadow-black/80">
+        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+        <span id="toast-msg">Settings saved!</span>
+      </div>
+
+      <!-- Segmented Tab Navigation Bar -->
+      <div class="flex items-center p-1.5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] backdrop-blur-xl gap-1.5 font-mono text-xs overflow-x-auto">
         
-        <div class="relative">
-          <svg class="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          <input 
-            type="text" 
-            id="member-search" 
-            placeholder="Search by name, role or email..." 
-            class="bg-[#08090d] border border-white/[0.1] rounded-xl pl-10 pr-4 py-2 text-xs text-white font-mono focus:border-white/40 focus:outline-none w-72 transition-all"
-          />
-        </div>
+        <!-- Tab 1: Hanging Polaroid Gallery -->
+        <button class="tab-btn active px-4 py-2.5 rounded-xl font-bold flex items-center gap-2 transition-all bg-white text-black border border-white shadow-lg" data-tab="tab-hanger">
+          <span>🖼️ Projects &amp; Wire Gallery</span>
+        </button>
+
+        <!-- Tab 2: Universal Content -->
+        <button class="tab-btn px-4 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent font-medium" data-tab="tab-content">
+          <span>📝 Website Content &amp; Copy</span>
+        </button>
+
+        <!-- Tab 3: Core Team Directory -->
+        <button class="tab-btn px-4 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent font-medium" data-tab="tab-team">
+          <span>👥 Core Team &amp; Builders</span>
+        </button>
+
+        <!-- Tab 4: Security & Master Password -->
+        <button class="tab-btn px-4 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.04] flex items-center gap-2 transition-all border border-transparent font-medium" data-tab="tab-security">
+          <span>🔑 Security &amp; Password</span>
+        </button>
+
       </div>
 
-      <!-- Members Table -->
-      <div class="rounded-2xl border border-white/[0.08] bg-[#0c0e14]/90 overflow-hidden shadow-2xl">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs font-mono">
-            <thead class="bg-white/[0.02] border-b border-white/[0.08] text-zinc-400 uppercase tracking-wider text-[11px]">
-              <tr>
-                <th class="p-4">Builder</th>
-                <th class="p-4">Assigned Role</th>
-                <th class="p-4">Specialization</th>
-                <th class="p-4">Verification Status</th>
-                <th class="p-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="members-table-body" class="divide-y divide-white/[0.04]">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
+
+      <!-- ========================================================================= -->
+      <!-- TAB 1: PROJECTS & HANGING POLAROID GALLERY CONTROLLER                      -->
+      <!-- ========================================================================= -->
+      <div id="tab-hanger" class="tab-content space-y-6">
+        
+        <!-- Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] backdrop-blur-xl">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+              <h2 class="text-lg font-bold text-white tracking-tight">Hanging Polaroid Line Controller</h2>
+              <span class="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">HOMEPAGE WIRE</span>
+            </div>
+            <p class="text-xs text-zinc-400">
+              Manage projects on the sagging wire gallery. Configure photos, handwritten titles, tech stacks, deep stories, and patent status.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-3 shrink-0">
+            <button id="btn-add-polaroid" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] flex items-center gap-1.5 transition-all cursor-pointer">
+              <span>+ Add Project</span>
+            </button>
+            <button id="btn-reset-polaroids" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-medium text-zinc-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] transition-all cursor-pointer">
+              Reset Defaults
+            </button>
+            <button id="btn-save-polaroids" type="button" class="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center gap-2 transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Save to Live Site</span>
+            </button>
+          </div>
         </div>
+
+        <!-- Info Pill -->
+        <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
+          <div class="flex items-center gap-2">
+            <span>💡</span>
+            <span>Cards auto-advance every 2 seconds on the wire. Enabling "Patented" automatically renders a realistic red stamp on the photo.</span>
+          </div>
+          <a href="index.html#gallery" target="_blank" class="text-white hover:underline font-semibold ml-4 shrink-0">
+            Preview Wire ↗
+          </a>
+        </div>
+
+        <!-- Polaroid Cards List Container -->
+        <div id="polaroid-list-container" class="space-y-4">
+          <!-- Populated dynamically via renderPolaroidsEditor() -->
+        </div>
+
       </div>
 
-    </div>
 
-
-    <!-- ========================================================================= -->
-    <!-- TAB 4: DATABASE & CREDENTIALS CONFIG                                      -->
-    <!-- ========================================================================= -->
-    <div id="tab-config" class="tab-content hidden space-y-6">
-      <div class="max-w-2xl p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-6 shadow-2xl">
-        <div class="border-b border-white/[0.08] pb-4">
-          <h2 class="text-base font-bold text-white tracking-tight">Database &amp; PostgreSQL Bridge</h2>
-          <p class="text-xs text-zinc-400 mt-1">Configure your Supabase project credentials to synchronize members and submissions.</p>
+      <!-- ========================================================================= -->
+      <!-- TAB 2: WEBSITE CONTENT & COPY (UNIVERSAL CMS)                             -->
+      <!-- ========================================================================= -->
+      <div id="tab-content" class="tab-content space-y-6 hidden">
+        
+        <!-- Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] backdrop-blur-xl">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+              <h2 class="text-lg font-bold text-white tracking-tight">Website Content &amp; Copy Editor</h2>
+              <span class="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">UNIVERSAL CMS</span>
+            </div>
+            <p class="text-xs text-zinc-400">
+              Edit headlines, founder manifesto, metrics, and call-to-action text across the entire website.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-3 shrink-0">
+            <button id="btn-reset-content" type="button" class="px-4 py-2.5 rounded-xl font-mono text-xs font-medium text-zinc-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] transition-all cursor-pointer">
+              Reset Defaults
+            </button>
+            <button id="btn-save-content" type="button" class="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center gap-2 transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Save Content Changes</span>
+            </button>
+          </div>
         </div>
 
-        <div class="space-y-4">
+        <!-- 2-Column Cards Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Card 1: Hero & Brand -->
+          <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 shadow-xl">
+            <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white text-xs font-mono font-bold">01</span>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Hero &amp; Brand Messaging</h3>
+                  <p class="text-[11px] text-zinc-400">Home page top headline, slogan, and description</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-zinc-500 uppercase">Home Page</span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Tagline</label>
+                <input id="cms_heroTagline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Terminal Box Headline</label>
+                <input id="cms_heroBoxHeadline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Terminal Box Slogan</label>
+                <input id="cms_heroBoxSubtitle" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Hero Description Paragraph</label>
+                <textarea id="cms_heroDescription" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Primary CTA Button</label>
+                  <input id="cms_heroCtaExplore" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Secondary CTA Button</label>
+                  <input id="cms_heroCtaJourney" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Founder Section -->
+          <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 shadow-xl">
+            <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white text-xs font-mono font-bold">02</span>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Founder Section &amp; Statement</h3>
+                  <p class="text-[11px] text-zinc-400">Sequential scroll reveal headlines and founder quote</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-zinc-500 uppercase">Section §01</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 1 (Intro)</label>
+                  <input id="cms_founderLine1" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Founder Name (Line 2)</label>
+                  <input id="cms_founderName" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white font-bold focus:outline-none focus:border-white/40">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3.5">
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 3</label>
+                  <input id="cms_founderLine3" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-medium text-zinc-300 mb-1">Line 4 (Organization)</label>
+                  <input id="cms_founderLine4" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Founder Philosophy Quote</label>
+                <textarea id="cms_founderQuote" rows="4" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
+              </div>
+
+              <div class="grid grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[10px] font-medium text-zinc-300 mb-1">Signature Name</label>
+                  <input id="cms_founderSigName" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-medium text-zinc-300 mb-1">Role Title</label>
+                  <input id="cms_founderSigTitle" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+                <div>
+                  <label class="block text-[10px] font-medium text-zinc-300 mb-1">Badge Tag</label>
+                  <input id="cms_founderBadge" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-white/40">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-medium text-zinc-300 mb-1">Transparent Avatar Graphic URL</label>
+                <input id="cms_founderAvatarUrl" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-3 py-2 text-xs font-mono text-zinc-300 focus:outline-none focus:border-white/40">
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Team Page Metrics & Manifesto -->
+          <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 shadow-xl">
+            <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white text-xs font-mono font-bold">03</span>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Team Page (/team) Metrics &amp; Story</h3>
+                  <p class="text-[11px] text-zinc-400">Headlines and stats on the public team page</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-zinc-500 uppercase">/team page</span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Team Page Main Headline</label>
+                <input id="cms_teamHeroHeadline" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Team Page Subtitle / Bio</label>
+                <textarea id="cms_teamHeroSubtitle" rows="2" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
+              </div>
+
+              <!-- 4 Metrics -->
+              <div class="grid grid-cols-2 gap-3.5">
+                <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC #1</span>
+                  <input id="cms_teamStat1Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="1,200+">
+                  <input id="cms_teamStat1Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Student Builders">
+                </div>
+
+                <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC #2</span>
+                  <input id="cms_teamStat2Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="28+">
+                  <input id="cms_teamStat2Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Hardware Sprints">
+                </div>
+
+                <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC #3</span>
+                  <input id="cms_teamStat3Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="15+">
+                  <input id="cms_teamStat3Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Silicon Tapeouts">
+                </div>
+
+                <div class="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
+                  <span class="text-[10px] font-mono text-zinc-400 font-semibold block">METRIC #4</span>
+                  <input id="cms_teamStat4Num" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-white font-mono font-bold" placeholder="100%">
+                  <input id="cms_teamStat4Label" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-lg px-2.5 py-1.5 text-xs text-zinc-300" placeholder="Student-Run & Open">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Founder Full Manifesto</label>
+                <textarea id="cms_teamFounderManifesto" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4: CTA & Footer -->
+          <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-5 shadow-xl">
+            <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white text-xs font-mono font-bold">04</span>
+                <div>
+                  <h3 class="text-sm font-bold text-white">Call to Action &amp; Footer</h3>
+                  <p class="text-[11px] text-zinc-400">Join fellowship invitation and footer line</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-mono text-zinc-500 uppercase">Global</span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Fellowship CTA Heading</label>
+                <input id="cms_ctaHeading" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Fellowship CTA Description</label>
+                <textarea id="cms_ctaBody" rows="3" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl p-3 text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-zinc-300 mb-1">Footer Copyright Notice</label>
+                <input id="cms_footerCopyright" type="text" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-white/40">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================================================================= -->
+      <!-- TAB 3: CORE TEAM & BUILDERS DIRECTORY                                     -->
+      <!-- ========================================================================= -->
+      <div id="tab-team" class="tab-content space-y-6 hidden">
+        
+        <!-- Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] backdrop-blur-xl">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+              <h2 class="text-lg font-bold text-white tracking-tight">Core Team &amp; Builders Directory</h2>
+              <span class="text-[10px] font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">/team ROSTER</span>
+            </div>
+            <p class="text-xs text-zinc-400">
+              Manage the hardware leads and innovators showcased on the Team page. Add, edit, or remove members.
+            </p>
+          </div>
+          
+          <div class="flex items-center gap-3 shrink-0">
+            <button id="btn-add-member" type="button" onclick="openAddMemberModal()" class="px-4 py-2.5 rounded-xl font-mono text-xs font-semibold text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] flex items-center gap-1.5 transition-all cursor-pointer">
+              <span>+ Add Builder</span>
+            </button>
+            <button id="btn-save-team" type="button" onclick="saveTeamMembersAdmin()" class="px-5 py-2.5 rounded-xl font-mono text-xs font-bold text-black bg-white hover:bg-zinc-200 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center gap-2 transition-all cursor-pointer">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Save Team Roster</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Team Members Grid -->
+        <div id="team-members-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Populated dynamically via renderTeamEditor() -->
+        </div>
+
+      </div>
+
+
+      <!-- ========================================================================= -->
+      <!-- TAB 4: SECURITY & MASTER PASSWORD SETTINGS                                -->
+      <!-- ========================================================================= -->
+      <div id="tab-security" class="tab-content space-y-6 hidden">
+        
+        <div class="max-w-2xl p-6 sm:p-8 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] space-y-6 shadow-xl">
+          <div class="border-b border-white/[0.08] pb-4 space-y-1">
+            <h2 class="text-lg font-bold text-white tracking-tight">Security &amp; Master Access Credentials</h2>
+            <p class="text-xs text-zinc-400">Manage the master password protecting this administrative console.</p>
+          </div>
+
+          <!-- Active Session Info -->
+          <div class="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-zinc-200 font-bold">Authenticated Admin Session Active</span>
+            </div>
+            <span class="text-zinc-500">LEVEL 1 AUTHORIZATION</span>
+          </div>
+
+          <!-- Change Password Form -->
+          <form id="change-pass-form" onsubmit="event.preventDefault(); handleChangePassword();" class="space-y-4">
+            <div>
+              <label class="block text-xs font-mono text-zinc-300 mb-1.5">Current Master Password</label>
+              <input type="password" id="pwd-current" placeholder="Current password" class="w-full bg-[#08090d] border border-white/[0.1] rounded-xl p-3 text-xs text-white font-mono focus:border-white/40 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-mono text-zinc-300 mb-1.5">New Master Password</label>
+                <input type="password" id="pwd-new" placeholder="New password" class="w-full bg-[#08090d] border border-white/[0.1] rounded-xl p-3 text-xs text-white font-mono focus:border-white/40 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-mono text-zinc-300 mb-1.5">Confirm New Password</label>
+                <input type="password" id="pwd-confirm" placeholder="Confirm password" class="w-full bg-[#08090d] border border-white/[0.1] rounded-xl p-3 text-xs text-white font-mono focus:border-white/40 focus:outline-none">
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between border-t border-white/[0.08]">
+              <button type="submit" class="px-5 py-2.5 rounded-xl font-bold font-mono text-xs text-black bg-white hover:bg-zinc-200 transition-all cursor-pointer">
+                Update Master Password
+              </button>
+              <button type="button" onclick="handleAdminLogout()" class="px-4 py-2.5 rounded-xl font-mono text-xs font-bold text-red-400 hover:text-white bg-red-950/30 hover:bg-red-900/50 border border-red-500/30 transition-all cursor-pointer">
+                Lock Console &amp; Sign Out
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- ADD / EDIT TEAM MEMBER MODAL                                              -->
+  <!-- ========================================================================= -->
+  <div id="member-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-[#0c0e14] border border-white/20 rounded-2xl p-6 sm:p-8 space-y-5 shadow-2xl relative">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <h3 id="member-modal-title" class="text-base font-bold text-white">Add Team Builder</h3>
+        <button type="button" onclick="closeMemberModal()" class="text-zinc-400 hover:text-white font-mono text-sm">✕</button>
+      </div>
+
+      <div class="space-y-3.5 font-mono text-xs">
+        <input type="hidden" id="modal-member-idx">
+
+        <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-mono text-zinc-300 mb-1.5">SUPABASE_URL</label>
-            <input type="text" id="cfg-supabase-url" placeholder="https://your-project.supabase.co" class="w-full bg-[#08090d] border border-white/[0.1] rounded-xl p-3 text-xs text-white font-mono focus:border-white/40 focus:outline-none">
+            <label class="block text-zinc-400 mb-1">Full Name</label>
+            <input type="text" id="modal-member-name" placeholder="e.g. Tanmay Tuli" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
           </div>
           <div>
-            <label class="block text-xs font-mono text-zinc-300 mb-1.5">SUPABASE_ANON_KEY</label>
-            <input type="password" id="cfg-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." class="w-full bg-[#08090d] border border-white/[0.1] rounded-xl p-3 text-xs text-white font-mono focus:border-white/40 focus:outline-none">
+            <label class="block text-zinc-400 mb-1">Initials (Avatar)</label>
+            <input type="text" id="modal-member-initials" placeholder="e.g. TT" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
           </div>
         </div>
 
-        <div class="pt-2 flex items-center justify-between border-t border-white/[0.08]">
-          <button id="btn-save-credentials" class="px-5 py-2.5 rounded-xl font-bold font-mono text-xs text-black bg-white hover:bg-zinc-200 text-black shadow-[0_0_15px_rgba(255, 255, 255, 0.1)] transition-all">
-            Save Credentials &amp; Connect
-          </button>
-          <span id="config-status-msg" class="text-xs font-mono text-zinc-400"></span>
+        <div>
+          <label class="block text-zinc-400 mb-1">Role / Title</label>
+          <input type="text" id="modal-member-role" placeholder="e.g. Lead Firmware & RTOS Architect" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-zinc-400 mb-1">Domain Badge</label>
+            <input type="text" id="modal-member-domain" placeholder="e.g. FIRMWARE" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
+          </div>
+          <div>
+            <label class="block text-zinc-400 mb-1">GitHub / Profile URL</label>
+            <input type="text" id="modal-member-link" placeholder="https://github.com/..." class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Active Hardware Shipment</label>
+          <input type="text" id="modal-member-shipment" placeholder="e.g. ⚡ Multi-Node LoRa Mesh Router v2" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Tech Stack Skills</label>
+          <input type="text" id="modal-member-stack" placeholder="e.g. FreeRTOS • C/C++ • LoRa" class="w-full bg-[#08090d] border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white/40">
+        </div>
+
+        <div>
+          <label class="block text-zinc-400 mb-1">Short Bio</label>
+          <textarea id="modal-member-bio" rows="3" placeholder="Brief engineering background and responsibilities..." class="w-full bg-[#08090d] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-white/40 leading-relaxed"></textarea>
         </div>
       </div>
+
+      <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
+        <button type="button" onclick="closeMemberModal()" class="px-4 py-2 rounded-xl text-zinc-400 hover:text-white font-mono text-xs">Cancel</button>
+        <button type="button" onclick="saveMemberFromModal()" class="px-5 py-2 rounded-xl bg-white text-black font-mono text-xs font-bold hover:bg-zinc-200">Save Builder</button>
+      </div>
     </div>
+  </div>
 
-  </main>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT CONTROLLERS                                                    -->
+  <!-- ========================================================================= -->
+  <script>
+    // --- 1. MASTER PASSWORD & AUTHENTICATION CONTROLLER ---
+    const DEFAULT_MASTER_PASSWORD = 'neogen2026';
+
+    // Synchronize master password from server if available
+    try {
+      fetch('/api/content')
+        .then(r => r.json())
+        .then(d => {
+          if (d && d.adminPassword) {
+            localStorage.setItem('neogen_admin_pwd', d.adminPassword);
+          }
+        })
+        .catch(() => {});
+    } catch(e) {}
+
+    function getMasterPassword() {
+      return localStorage.getItem('neogen_admin_pwd') || DEFAULT_MASTER_PASSWORD;
+    }
+
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem('neogen_admin_auth') === 'true';
+      const gate = document.getElementById('admin-auth-gate');
+      const root = document.getElementById('admin-dashboard-root');
+
+      if (isAuth) {
+        if (gate) gate.classList.add('hidden');
+        if (root) root.classList.remove('hidden');
+      } else {
+        if (gate) gate.classList.remove('hidden');
+        if (root) root.classList.add('hidden');
+      }
+    }
+
+    function handleAdminLogin() {
+      const input = document.getElementById('admin-pass-input');
+      const errorMsg = document.getElementById('auth-error-msg');
+      const authBox = document.getElementById('auth-box');
+      const val = (input ? input.value : '').trim();
+
+      const realPass = getMasterPassword();
+
+      if (val === realPass) {
+        if (errorMsg) errorMsg.classList.add('hidden');
+        sessionStorage.setItem('neogen_admin_auth', 'true');
+        showToast('Access Granted. Welcome Raushan.');
+        checkAuth();
+      } else {
+        if (errorMsg) errorMsg.classList.remove('hidden');
+        if (authBox) {
+          authBox.classList.remove('shake-animation');
+          void authBox.offsetWidth;
+          authBox.classList.add('shake-animation');
+        }
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('neogen_admin_auth');
+      showToast('Console Locked. Session closed.');
+      checkAuth();
+      const input = document.getElementById('admin-pass-input');
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    function togglePassVisibility() {
+      const input = document.getElementById('admin-pass-input');
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    function handleChangePassword() {
+      const cur = document.getElementById('pwd-current').value;
+      const n1 = document.getElementById('pwd-new').value;
+      const n2 = document.getElementById('pwd-confirm').value;
+
+      if (cur !== getMasterPassword()) {
+        alert('Current password does not match.');
+        return;
+      }
+      if (!n1 || n1.length < 6) {
+        alert('New password must be at least 6 characters long.');
+        return;
+      }
+      if (n1 !== n2) {
+        alert('New passwords do not match.');
+        return;
+      }
+
+      localStorage.setItem('neogen_admin_pwd', n1);
+      
+      // Also persist to server site_content.json
+      fetch('/api/content')
+        .then(r => r.json())
+        .then(content => {
+          content.adminPassword = n1;
+          return fetch('/api/content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(content)
+          });
+        })
+        .catch(() => {});
+
+      document.getElementById('pwd-current').value = '';
+      document.getElementById('pwd-new').value = '';
+      document.getElementById('pwd-confirm').value = '';
+
+      showToast('Master password successfully updated!');
+    }
 
 
-  <!-- ================= JAVASCRIPT CONTROLLERS ================= -->
-  <script type="module">
-    import { 
-      SUPABASE_CONFIG, 
-      isSupabaseConfigured, 
-      setSupabaseCredentials, 
-      fetchAllProfiles, 
-      toggleMemberApproval, 
-      deleteMemberProfile 
-    } from './js/supabaseClient.js';
-
-    let allLoadedProfiles = [];
-
-    // --- TAB SWITCHER ---
+    // --- 2. TAB CONTROLLER ---
     function setupTabs() {
       const tabBtns = document.querySelectorAll('.tab-btn');
       tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           tabBtns.forEach(b => {
-            b.classList.remove('active', 'bg-white/10', 'text-zinc-200', 'border-white/20', 'shadow-[0_0_15px_rgba(255, 255, 255, 0.06)]');
+            b.classList.remove('active', 'bg-white', 'text-black', 'shadow-lg');
             b.classList.add('text-zinc-400', 'border-transparent');
           });
-          btn.classList.add('active', 'bg-white/10', 'text-zinc-200', 'border-white/20', 'shadow-[0_0_15px_rgba(255, 255, 255, 0.06)]');
+          btn.classList.add('active', 'bg-white', 'text-black', 'shadow-lg');
           btn.classList.remove('text-zinc-400', 'border-transparent');
 
           const tabId = btn.getAttribute('data-tab');
@@ -582,120 +815,8 @@
       });
     }
 
-    // --- MEMBERS MANAGEMENT ---
-    async function loadMembersAdmin() {
-      if (!isSupabaseConfigured()) {
-        const tbody = document.getElementById('members-table-body');
-        if (tbody) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="5" class="p-6 text-center text-zinc-500 font-mono text-xs">
-                Local mode active. Link Supabase credentials in "Database & Keys" to view live PostgreSQL builder roster.
-              </td>
-            </tr>`;
-        }
-        return;
-      }
 
-      try {
-        allLoadedProfiles = await fetchAllProfiles();
-        renderTableRows(allLoadedProfiles);
-      } catch (err) {
-        console.error('Failed to load members:', err);
-      }
-    }
-
-    function renderTableRows(profiles) {
-      const tbody = document.getElementById('members-table-body');
-      if (!tbody) return;
-
-      if (!profiles || !profiles.length) {
-        tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-zinc-500 font-mono text-xs">No registered builders found.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = profiles.map(p => `
-        <tr class="hover:bg-white/[0.02] transition-colors">
-          <td class="p-4 flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center font-bold text-white text-xs">
-              ${(p.full_name || 'U')[0].toUpperCase()}
-            </div>
-            <div>
-              <div class="font-bold text-white">${p.full_name || 'Anonymous'}</div>
-              <div class="text-[10px] text-zinc-500">${p.email || 'No email'}</div>
-            </div>
-          </td>
-          <td class="p-4 text-zinc-300">${p.title || 'Builder'}</td>
-          <td class="p-4 text-zinc-400">${p.department || 'Hardware'}</td>
-          <td class="p-4">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold ${p.approved ? 'bg-white/5 text-zinc-200 border border-white/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'}">
-              <span class="w-1.5 h-1.5 rounded-full ${p.approved ? 'bg-white' : 'bg-amber-400'}"></span>
-              ${p.approved ? 'Approved' : 'Pending'}
-            </span>
-          </td>
-          <td class="p-4 text-right">
-            <button onclick="window.toggleApproval('${p.id}', ${!p.approved})" class="px-2.5 py-1 text-[11px] rounded bg-white/[0.05] hover:bg-white/[0.1] text-zinc-300 mr-1.5 transition-all">
-              ${p.approved ? 'Revoke' : 'Approve'}
-            </button>
-            <button onclick="window.deleteUser('${p.id}')" class="px-2.5 py-1 text-[11px] rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-all">
-              Delete
-            </button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    window.toggleApproval = async (id, status) => {
-      await toggleMemberApproval(id, status);
-      showToast('Status updated.');
-      loadMembersAdmin();
-    };
-
-    window.deleteUser = async (id) => {
-      if (!confirm('Remove member permanently?')) return;
-      await deleteMemberProfile(id);
-      showToast('Member removed.');
-      loadMembersAdmin();
-    };
-
-    // --- SETUP ACTIONS ---
-    function setupActions() {
-      const credBtn = document.getElementById('btn-save-credentials');
-      if (credBtn) {
-        credBtn.addEventListener('click', () => {
-          const url = document.getElementById('cfg-supabase-url').value;
-          const key = document.getElementById('cfg-supabase-key').value;
-          setSupabaseCredentials(url, key);
-          showToast('Credentials updated & cached.');
-          document.getElementById('config-status-msg').innerText = 'Connected. Reloading...';
-          setTimeout(() => location.reload(), 800);
-        });
-      }
-
-      const searchInput = document.getElementById('member-search');
-      if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-          const term = e.target.value.toLowerCase();
-          const filtered = allLoadedProfiles.filter(p => 
-            p.full_name?.toLowerCase().includes(term) || 
-            p.email?.toLowerCase().includes(term) ||
-            p.title?.toLowerCase().includes(term)
-          );
-          renderTableRows(filtered);
-        });
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      setupTabs();
-      setupActions();
-      loadMembersAdmin();
-    });
-  </script>
-
-  <!-- ================= POLAROID HANGER & UNIVERSAL CMS SCRIPTS ================= -->
-  <script>
-    // --- POLAROID CAROUSEL CONTROLLER ---
+    // --- 3. POLAROID GALLERY CONTROLLER ---
     const DEFAULT_POLAROID_SLIDES = [
       {
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
@@ -727,7 +848,7 @@
       {
         image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
         title: "Edge AI Vision",
-        caption: "Quantized neural model deployed on bare-metal ARM Cortex.",
+        caption: "Quantized neural model inference running bare-metal on ARM Cortex-M55.",
         isPatented: true,
         details: "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
         specs: "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
@@ -736,7 +857,7 @@
       {
         image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
         title: "Maker Lab Night",
-        caption: "Teen builders shipping physical hardware at 3:00 AM.",
+        caption: "Late night reflow soldering, logic analyzer debugging, and firmware flashing.",
         isPatented: false,
         details: "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
         specs: "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
@@ -745,7 +866,7 @@
       {
         image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
         title: "Firmware Flash",
-        caption: "Zero-latency FreeRTOS sensor fusion testing.",
+        caption: "Zero-latency FreeRTOS sensor fusion testing on physical silicon.",
         isPatented: false,
         details: "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
         specs: "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
@@ -761,7 +882,6 @@
         if (stored) {
           currentPolaroids = JSON.parse(stored);
         } else {
-          // Attempt loading from backend
           const res = await fetch('/api/content');
           const data = await res.json();
           if (data && data.polaroidSlides && data.polaroidSlides.length) {
@@ -781,14 +901,14 @@
       if (!container) return;
 
       if (!currentPolaroids.length) {
-        container.innerHTML = '<div class="p-8 text-center text-zinc-500 font-mono text-xs border border-dashed border-white/10 rounded-2xl">No prints currently on the line. Click "+ Add Print" to create one.</div>';
+        container.innerHTML = '<div class="p-8 text-center text-zinc-500 font-mono text-xs border border-dashed border-white/10 rounded-2xl">No prints currently on the line. Click "+ Add Project" to create one.</div>';
         return;
       }
 
       container.innerHTML = currentPolaroids.map((slide, index) => `
         <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] hover:border-white/[0.14] transition-all flex flex-col md:flex-row items-start gap-6 shadow-xl shadow-black/40" data-slide-index="${index}">
           
-          <!-- Mini Real Polaroid Card Preview -->
+          <!-- Mini Real Polaroid Card Preview with Patent Stamp -->
           <div class="w-36 shrink-0 bg-[#fbfaf7] p-3 pb-2 rounded-lg shadow-xl border border-zinc-300 text-center select-none transform hover:rotate-1 transition-transform self-center md:self-start">
             <div class="w-full aspect-square bg-zinc-900 overflow-hidden rounded-sm relative">
               <img src="${slide.image || ''}" alt="${slide.title || 'Print'}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/300x300/18181b/ffffff?text=Image';">
@@ -816,13 +936,13 @@
               </div>
               
               <div class="flex items-center gap-1">
-                <button type="button" onclick="movePolaroid(${index}, -1)" class="p-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all" title="Move Left">
+                <button type="button" onclick="movePolaroid(${index}, -1)" class="p-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all cursor-pointer" title="Move Left">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                 </button>
-                <button type="button" onclick="movePolaroid(${index}, 1)" class="p-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all" title="Move Right">
+                <button type="button" onclick="movePolaroid(${index}, 1)" class="p-1.5 text-zinc-400 hover:text-white hover:bg-white/[0.06] rounded-lg transition-all cursor-pointer" title="Move Right">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                 </button>
-                <button type="button" onclick="deletePolaroid(${index})" class="p-1.5 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg ml-1.5 transition-all" title="Delete Print">
+                <button type="button" onclick="deletePolaroid(${index})" class="p-1.5 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg ml-1.5 transition-all cursor-pointer" title="Delete Print">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                 </button>
               </div>
@@ -832,7 +952,7 @@
             <div class="flex items-center justify-between p-3 rounded-xl bg-black/40 border border-white/[0.08]">
               <div class="flex items-center gap-2.5">
                 <span class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 font-mono text-[10px] font-bold">★ PATENT STATUS</span>
-                <span class="font-mono text-xs text-zinc-300">Display official "PATENTED" ink stamp on image</span>
+                <span class="font-mono text-xs text-zinc-300">Display official "PATENTED" rubber stamp on image</span>
               </div>
               <label class="relative inline-flex items-center cursor-pointer select-none">
                 <input type="checkbox" ${slide.isPatented ? 'checked' : ''} onchange="updatePolaroidField(${index}, 'isPatented', this.checked); renderPolaroidsEditor();" class="sr-only peer">
@@ -877,18 +997,6 @@
 
             <!-- Elaborated Narrative Story (Shown when clicked) -->
             <div class="pt-1">
-              <div class="flex items-center justify-between mb-1">
-                <label class="text-[11px] font-mono text-zinc-400">Elaborated Engineering Story &amp; Narrative (Click-to-Expand Modal)</label>
-                <span class="text-[10px] font-mono text-zinc-500">Opens in Full Architecture Dossier</span>
-              </div>
-              <textarea rows="3" oninput="updatePolaroidField(${index}, 'details', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed resize-y" placeholder="Describe the engineering challenge, microcontroller architecture, sensor integration, and performance benchmarks...">${slide.details || ''}</textarea>
-            </div>
-
-          </div>
-
-        </div>
-      `).join('');
-    }
               <div class="flex items-center justify-between mb-1">
                 <label class="text-[11px] font-mono text-zinc-400">Elaborated Engineering Story &amp; Narrative (Click-to-Expand Modal)</label>
                 <span class="text-[10px] font-mono text-zinc-500">Opens in Full Architecture Dossier</span>
@@ -963,7 +1071,6 @@
           localStorage.setItem('neogen_polaroid_slides', JSON.stringify(currentPolaroids));
           window.dispatchEvent(new Event('storage'));
 
-          // Also sync to server-side content file
           try {
             let existingContent = {};
             try {
@@ -978,16 +1085,16 @@
             });
           } catch (e) {}
 
-          showToast('Hanging Polaroid prints & elaborated specs saved! Live site updated.');
+          showToast('Hanging Polaroid prints & patent states saved! Live site updated.');
         });
       }
     }
 
 
-    // --- UNIVERSAL CMS CONTENT CONTROLLER ---
+    // --- 4. UNIVERSAL CONTENT CONTROLLER ---
     const CMS_KEYS = [
       'heroTagline', 'heroBoxHeadline', 'heroBoxSubtitle', 'heroDescription', 'heroCtaExplore', 'heroCtaJourney',
-      'founderTag', 'founderLine1', 'founderName', 'founderLine3', 'founderLine4', 'founderQuote', 'founderSigName', 'founderSigTitle', 'founderBadge', 'founderAvatarUrl',
+      'founderLine1', 'founderName', 'founderLine3', 'founderLine4', 'founderQuote', 'founderSigName', 'founderSigTitle', 'founderBadge', 'founderAvatarUrl',
       'teamHeroHeadline', 'teamHeroSubtitle', 'teamStat1Num', 'teamStat1Label', 'teamStat2Num', 'teamStat2Label', 'teamStat3Num', 'teamStat3Label', 'teamStat4Num', 'teamStat4Label', 'teamFounderManifesto',
       'ctaHeading', 'ctaBody', 'footerCopyright'
     ];
@@ -1027,11 +1134,9 @@
         if (input) data[key] = input.value;
       });
 
-      // 1. Instant local storage cache & event dispatch
       localStorage.setItem('neogen_site_content', JSON.stringify(data));
       window.dispatchEvent(new Event('storage'));
 
-      // 2. Persist to server API (merge to preserve polaroidSlides)
       try {
         let existing = {};
         try {
@@ -1046,7 +1151,7 @@
         });
       } catch (err) {}
 
-      showToast('Universal texts & quotes saved! Live site updated.');
+      showToast('Website copy & quotes saved! Live site updated.');
     }
 
     function setupUniversalContentAdmin() {
@@ -1072,7 +1177,240 @@
       }
     }
 
-    // --- TOAST NOTIFICATIONS ---
+
+    // --- 5. CORE TEAM BUILDERS CONTROLLER ---
+    let currentTeamMembers = [];
+
+    async function loadTeamMembers() {
+      try {
+        const res = await fetch('/api/content');
+        const data = await res.json();
+        if (data && data.teamMembers && data.teamMembers.length) {
+          currentTeamMembers = data.teamMembers;
+        } else {
+          const cached = localStorage.getItem('neogen_team_members');
+          if (cached) currentTeamMembers = JSON.parse(cached);
+        }
+      } catch (e) {}
+
+      if (!currentTeamMembers || !currentTeamMembers.length) {
+        currentTeamMembers = [
+          {
+            name: "Tanmay Tuli",
+            initials: "TT",
+            role: "Lead Firmware & RTOS Architect",
+            domain: "FIRMWARE",
+            bio: "Architects multi-threaded embedded firmware for ESP32 and STM32 chips. Specializes in low-latency interrupt handling, FreeRTOS queues, and custom hardware bootloaders.",
+            shipment: "⚡ Multi-Node LoRa Mesh Router v2",
+            stack: "FreeRTOS • C/C++ • LoRa",
+            link: "https://github.com/tanmaytuliofficial"
+          },
+          {
+            name: "Priya Patel",
+            initials: "PP",
+            role: "Autonomous Systems & Robotics Lead",
+            domain: "ROBOTICS",
+            bio: "Specializes in kinematic motor control, LiDAR sensor fusion, and ROS2 navigation stacks for all-terrain autonomous rover platforms.",
+            shipment: "🤖 Differential Drive Autonomous Rover",
+            stack: "ROS2 • LiDAR • STM32 Motor PID",
+            link: "https://github.com"
+          },
+          {
+            name: "Rohan Sen",
+            initials: "RS",
+            role: "High-Speed PCB & Hardware Engineer",
+            domain: "HARDWARE",
+            bio: "Designs 4-layer impedance-matched PCBs, high-current power distribution networks, and differential USB/Ethernet routing in KiCad.",
+            shipment: "🖲️ RP2040 Compute Breakout Carrier v1.4",
+            stack: "KiCad 8 • SMD Soldering • Signal Integrity",
+            link: "https://github.com"
+          },
+          {
+            name: "Ananya Verma",
+            initials: "AV",
+            role: "TinyML & Edge Vision Specialist",
+            domain: "EDGE AI",
+            bio: "Quantizes neural networks down to INT8 precision and compiles them bare-metal onto low-power ARM Cortex-M microcontrollers.",
+            shipment: "👁️ Sub-Watt Person Detection Camera Node",
+            stack: "TFLite Micro • CMSIS-NN • Python",
+            link: "https://github.com"
+          },
+          {
+            name: "Vikram Nair",
+            initials: "VN",
+            role: "Sub-GHz Telemetry & RF Systems",
+            domain: "PROTOCOLS",
+            bio: "Builds long-range RF telemetry networks and custom packet framing protocols. Achieved 12km ground-to-ground communication links without cellular data.",
+            shipment: "📡 433MHz Long-Range Telemetry Node",
+            stack: "SX1262 • LoRaWAN • RF Circuit Design",
+            link: "https://github.com"
+          },
+          {
+            name: "Aarav Sharma",
+            initials: "AS",
+            role: "Hardware Hackathons & Maker Community",
+            domain: "COMMUNITY",
+            bio: "Mentors student teams across universities in hardware prototyping, rapid breadboarding, and launching student-led engineering sprints.",
+            shipment: "🛠️ National Hardware Builder Sprint 2026",
+            stack: "Maker Workshops • Hackathons • Git",
+            link: "https://github.com"
+          }
+        ];
+      }
+      renderTeamEditor();
+    }
+
+    function renderTeamEditor() {
+      const container = document.getElementById('team-members-list');
+      if (!container) return;
+
+      container.innerHTML = currentTeamMembers.map((m, idx) => `
+        <div class="p-5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] hover:border-white/[0.14] transition-all flex flex-col justify-between space-y-4 shadow-xl">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center font-mono font-bold text-white text-sm">
+                ${m.initials || m.name.substring(0, 2).toUpperCase()}
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-white/10 text-zinc-200 border border-white/15">
+                ${m.domain || 'BUILDER'}
+              </span>
+            </div>
+
+            <div>
+              <h4 class="text-base font-bold text-white tracking-tight">${m.name}</h4>
+              <p class="font-mono text-xs text-zinc-400">${m.role}</p>
+            </div>
+
+            <p class="text-xs text-zinc-400 leading-relaxed line-clamp-3">
+              ${m.bio}
+            </p>
+
+            <div class="pt-1">
+              <span class="text-[9px] font-mono text-zinc-500 uppercase block mb-1">SHIPMENT</span>
+              <div class="text-xs font-mono text-zinc-200 bg-white/[0.03] px-2.5 py-1.5 rounded border border-white/[0.08] truncate">
+                ${m.shipment || 'Active Hardware Prototype'}
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between font-mono text-xs">
+            <span class="text-[10px] text-zinc-500 truncate max-w-[120px]">${m.stack || 'Hardware'}</span>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="openEditMemberModal(${idx})" class="px-2.5 py-1 rounded bg-white/[0.05] hover:bg-white/[0.12] text-zinc-300 transition-all cursor-pointer">
+                Edit
+              </button>
+              <button type="button" onclick="deleteTeamMember(${idx})" class="px-2.5 py-1 rounded bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-all cursor-pointer">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.openAddMemberModal = function() {
+      document.getElementById('member-modal-title').innerText = 'Add Team Builder';
+      document.getElementById('modal-member-idx').value = '';
+      document.getElementById('modal-member-name').value = '';
+      document.getElementById('modal-member-initials').value = '';
+      document.getElementById('modal-member-role').value = '';
+      document.getElementById('modal-member-domain').value = 'HARDWARE';
+      document.getElementById('modal-member-link').value = 'https://github.com';
+      document.getElementById('modal-member-shipment').value = '⚡ Custom Hardware Prototype';
+      document.getElementById('modal-member-stack').value = 'KiCad • C++ • Hardware';
+      document.getElementById('modal-member-bio').value = '';
+      
+      const modal = document.getElementById('member-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    window.openEditMemberModal = function(idx) {
+      const m = currentTeamMembers[idx];
+      if (!m) return;
+      document.getElementById('member-modal-title').innerText = 'Edit Team Builder';
+      document.getElementById('modal-member-idx').value = String(idx);
+      document.getElementById('modal-member-name').value = m.name || '';
+      document.getElementById('modal-member-initials').value = m.initials || '';
+      document.getElementById('modal-member-role').value = m.role || '';
+      document.getElementById('modal-member-domain').value = m.domain || 'HARDWARE';
+      document.getElementById('modal-member-link').value = m.link || 'https://github.com';
+      document.getElementById('modal-member-shipment').value = m.shipment || '';
+      document.getElementById('modal-member-stack').value = m.stack || '';
+      document.getElementById('modal-member-bio').value = m.bio || '';
+      
+      const modal = document.getElementById('member-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    };
+
+    window.closeMemberModal = function() {
+      const modal = document.getElementById('member-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    };
+
+    window.saveMemberFromModal = function() {
+      const idxStr = document.getElementById('modal-member-idx').value;
+      const name = document.getElementById('modal-member-name').value.trim();
+      if (!name) {
+        alert('Please enter a name for the builder.');
+        return;
+      }
+
+      const memberObj = {
+        name: name,
+        initials: (document.getElementById('modal-member-initials').value.trim() || name.substring(0, 2)).toUpperCase(),
+        role: document.getElementById('modal-member-role').value.trim() || 'Hardware Engineer',
+        domain: (document.getElementById('modal-member-domain').value.trim() || 'HARDWARE').toUpperCase(),
+        link: document.getElementById('modal-member-link').value.trim() || 'https://github.com',
+        shipment: document.getElementById('modal-member-shipment').value.trim() || '⚡ Hardware Project',
+        stack: document.getElementById('modal-member-stack').value.trim() || 'C/C++ • PCB',
+        bio: document.getElementById('modal-member-bio').value.trim() || 'Dedicated NeoGen builder shipping cyber-physical hardware.'
+      };
+
+      if (idxStr !== '') {
+        const idx = parseInt(idxStr, 10);
+        currentTeamMembers[idx] = memberObj;
+      } else {
+        currentTeamMembers.push(memberObj);
+      }
+
+      closeMemberModal();
+      renderTeamEditor();
+      saveTeamMembersAdmin();
+    };
+
+    window.deleteTeamMember = function(idx) {
+      if (!confirm('Remove this team member from the roster?')) return;
+      currentTeamMembers.splice(idx, 1);
+      renderTeamEditor();
+      saveTeamMembersAdmin();
+    };
+
+    window.saveTeamMembersAdmin = async function() {
+      localStorage.setItem('neogen_team_members', JSON.stringify(currentTeamMembers));
+      window.dispatchEvent(new Event('storage'));
+
+      try {
+        let existingContent = {};
+        try {
+          const res = await fetch('/api/content');
+          existingContent = await res.json();
+        } catch (e) {}
+        existingContent.teamMembers = currentTeamMembers;
+        await fetch('/api/content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(existingContent)
+        });
+      } catch (e) {}
+
+      showToast('Team roster updated and saved!');
+    };
+
+
+    // --- 6. TOAST NOTIFICATIONS ---
     function showToast(msg) {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-msg');
@@ -1085,11 +1423,19 @@
       }
     }
 
+
+    // --- 7. INITIALIZATION ON DOM READY ---
     document.addEventListener('DOMContentLoaded', () => {
-      setupUniversalContentAdmin();
+      checkAuth();
+      setupTabs();
       setupPolaroidAdmin();
+      setupUniversalContentAdmin();
+      loadTeamMembers();
     });
   </script>
+
+  <!-- Universal CMS Sync Client -->
+  <script src="cms-client.js"></script>
 
 </body>
 </html>

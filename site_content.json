@@ -5,7 +5,6 @@
   "heroDescription": "NeoGen is a private builders community where passionate students collaborate on hardware hackathons, IoT labs, robotics, edge silicon, and open-source innovation.",
   "heroCtaExplore": "Explore Team →",
   "heroCtaJourney": "Our Journey",
-
   "founderTag": "",
   "founderLine1": "HI, MY NAME IS",
   "founderName": "RAUSHAN KUMAR.",
@@ -16,7 +15,6 @@
   "founderSigTitle": "FOUNDER & CHIEF ARCHITECT — NEO GEN INNOVATORS",
   "founderBadge": "DIRECTOR",
   "founderAvatarUrl": "raushan-avatar-nobg.png",
-
   "teamHeroHeadline": "THE MINDS BEHIND NEOGEN.",
   "teamHeroSubtitle": "We are a collective of hardcore hardware hackers, embedded engineers, and physical computing builders across India. We don't just write theoretical code — we design boards, flash silicon, and ship cyber-physical systems.",
   "teamStat1Num": "1,200+",
@@ -28,11 +26,9 @@
   "teamStat4Num": "100%",
   "teamStat4Label": "Student-Run & Open",
   "teamFounderManifesto": "\"Engineering college culture across the country is trapped in rigid textbooks, stale theory, and beginner web tutorials. We built Neo Gen Innovators to break those walls. When you solder your first custom PCB, debug a high-speed bus with a logic analyzer, and flash your own RTOS firmware, you aren't just a student anymore — you are an innovator shipping real silicon.\"",
-
   "ctaHeading": "WANT TO BUILD WITH US?",
   "ctaBody": "If you have ideas for real electronics, embedded firmware, robotic platforms, or hardware hackathons, there is a workbench waiting for you in NeoGen.",
   "footerCopyright": "© 2026 Neo Gen Innovators. All rights reserved.",
-
   "polaroidSlides": [
     {
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
@@ -87,6 +83,75 @@
       "details": "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
       "specs": "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
+    }
+  ],
+  "adminPassword": "neogen2026",
+  "teamMembers": [
+    {
+      "id": "tm-1",
+      "name": "Tanmay Tuli",
+      "initials": "TT",
+      "role": "Lead Firmware & RTOS Architect",
+      "domain": "FIRMWARE",
+      "bio": "Architects multi-threaded embedded firmware for ESP32 and STM32 chips. Specializes in low-latency interrupt handling, FreeRTOS queues, and custom hardware bootloaders.",
+      "shipment": "⚡ Multi-Node LoRa Mesh Router v2",
+      "stack": "FreeRTOS • C/C++ • LoRa",
+      "link": "https://github.com/tanmaytuliofficial"
+    },
+    {
+      "id": "tm-2",
+      "name": "Priya Patel",
+      "initials": "PP",
+      "role": "Autonomous Systems & Robotics Lead",
+      "domain": "ROBOTICS",
+      "bio": "Specializes in kinematic motor control, LiDAR sensor fusion, and ROS2 navigation stacks for all-terrain autonomous rover platforms.",
+      "shipment": "🤖 Differential Drive Autonomous Rover",
+      "stack": "ROS2 • LiDAR • STM32 Motor PID",
+      "link": "https://github.com"
+    },
+    {
+      "id": "tm-3",
+      "name": "Rohan Sen",
+      "initials": "RS",
+      "role": "High-Speed PCB & Hardware Engineer",
+      "domain": "HARDWARE",
+      "bio": "Designs 4-layer impedance-matched PCBs, high-current power distribution networks, and differential USB/Ethernet routing in KiCad.",
+      "shipment": "🖲️ RP2040 Compute Breakout Carrier v1.4",
+      "stack": "KiCad 8 • SMD Soldering • Signal Integrity",
+      "link": "https://github.com"
+    },
+    {
+      "id": "tm-4",
+      "name": "Ananya Verma",
+      "initials": "AV",
+      "role": "TinyML & Edge Vision Specialist",
+      "domain": "EDGE AI",
+      "bio": "Quantizes neural networks down to INT8 precision and compiles them bare-metal onto low-power ARM Cortex-M microcontrollers.",
+      "shipment": "👁️ Sub-Watt Person Detection Camera Node",
+      "stack": "TFLite Micro • CMSIS-NN • Python",
+      "link": "https://github.com"
+    },
+    {
+      "id": "tm-5",
+      "name": "Vikram Nair",
+      "initials": "VN",
+      "role": "Sub-GHz Telemetry & RF Systems",
+      "domain": "PROTOCOLS",
+      "bio": "Builds long-range RF telemetry networks and custom packet framing protocols. Achieved 12km ground-to-ground communication links without cellular data.",
+      "shipment": "📡 433MHz Long-Range Telemetry Node",
+      "stack": "SX1262 • LoRaWAN • RF Circuit Design",
+      "link": "https://github.com"
+    },
+    {
+      "id": "tm-6",
+      "name": "Aarav Sharma",
+      "initials": "AS",
+      "role": "Hardware Hackathons & Maker Community",
+      "domain": "COMMUNITY",
+      "bio": "Mentors student teams across universities in hardware prototyping, rapid breadboarding, and launching student-led engineering sprints.",
+      "shipment": "🛠️ National Hardware Builder Sprint 2026",
+      "stack": "Maker Workshops • Hackathons • Git",
+      "link": "https://github.com"
     }
   ]
 }

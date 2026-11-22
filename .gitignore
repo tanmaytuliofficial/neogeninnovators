@@ -23,6 +23,7 @@ remove_*.ps1
 preview_*.png
 *_backup*.html
 gobitsnbytes_raw.html
+scratch/
 
 # OS files
 .DS_Store
