@@ -3,7 +3,7 @@
   "heroBoxHeadline": "A HARDWARE BUILDER NETWORK ACROSS INDIA.",
   "heroBoxSubtitle": "BUILT BY INNOVATORS, DESIGNED TO SHIP PHYSICAL SILICON.",
   "heroDescription": "NeoGen is a private builders community where passionate students collaborate on hardware hackathons, IoT labs, robotics, edge silicon, and open-source innovation.",
-  "heroCtaExplore": "Explore Team →",
+  "heroCtaExplore": "Explore Team \u2192",
   "heroCtaJourney": "Our Journey",
   "founderTag": "",
   "founderLine1": "HI, MY NAME IS",
@@ -12,7 +12,7 @@
   "founderLine4": "NEO GEN INNOVATORS.",
   "founderQuote": "\"We don't build slide decks or pitch imaginary AI wrappers. At Neo Gen Innovators, our mission is to unite passionate builders across India to solder custom microcontrollers, write bare-metal RTOS firmware, and deploy quantized neural models directly onto physical silicon.\"",
   "founderSigName": "Raushan Kumar",
-  "founderSigTitle": "FOUNDER & CHIEF ARCHITECT — NEO GEN INNOVATORS",
+  "founderSigTitle": "FOUNDER & CHIEF ARCHITECT \u2014 NEO GEN INNOVATORS",
   "founderBadge": "DIRECTOR",
   "founderAvatarUrl": "raushan-avatar-nobg.png",
   "teamHeroHeadline": "THE MINDS BEHIND NEOGEN.",
@@ -29,7 +29,7 @@
   "teamFounderManifesto": "",
   "ctaHeading": "WANT TO BUILD WITH US?",
   "ctaBody": "If you have ideas for real electronics, embedded firmware, robotic platforms, or hardware hackathons, there is a workbench waiting for you in NeoGen.",
-  "footerCopyright": "© 2026 Neo Gen Innovators. All rights reserved.",
+  "footerCopyright": "\u00a9 2026 Neo Gen Innovators. All rights reserved.",
   "polaroidSlides": [
     {
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
@@ -37,7 +37,7 @@
       "caption": "Custom RP2040 breakout board soldered during 48hr hardware sprint.",
       "isPatented": true,
       "details": "Engineered from scratch during an intense 48-hour hardware sprint. Silicon Core V2 integrates a dual-core RP2040 MCU with custom power delivery circuitry, dedicated 16MB QSPI flash, and high-speed differential signal routing. The board serves as the fundamental computing hub for NeoGen's modular sensor payloads, running bare-metal C++ firmware with zero external operating system overhead.",
-      "specs": "RP2040 Dual-Core • 133MHz • 16MB QSPI Flash • KiCad 8 4-Layer PCB • 3.3V LDO",
+      "specs": "RP2040 Dual-Core \u2022 133MHz \u2022 16MB QSPI Flash \u2022 KiCad 8 4-Layer PCB \u2022 3.3V LDO",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     },
     {
@@ -46,7 +46,7 @@
       "caption": "LIDAR mapping and Sub-GHz telemetry testing in Delhi.",
       "isPatented": true,
       "details": "A ground-up cyber-physical rover designed for rugged off-road autonomous exploration and environmental mapping. Features 360-degree LiDAR simultaneous localization and mapping (SLAM), wheel-encoder odometry, and an ultra-reliable 433MHz Sub-GHz telemetry link delivering live kinematic data up to 3 kilometers away without Wi-Fi or cellular connectivity.",
-      "specs": "ROS2 Humble • RPLiDAR A1 • STM32F4 Motion Controller • 433MHz LoRa Telemetry • 12V LiFePO4",
+      "specs": "ROS2 Humble \u2022 RPLiDAR A1 \u2022 STM32F4 Motion Controller \u2022 433MHz LoRa Telemetry \u2022 12V LiFePO4",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     },
     {
@@ -55,7 +55,7 @@
       "caption": "Solar-powered environmental sensor grid running on ESP32.",
       "isPatented": false,
       "details": "Ultra-low power autonomous field node engineered to run indefinitely on a single 18650 lithium cell paired with a 2W solar harvester. Nodes self-organize into a resilient multi-hop mesh network over Semtech SX1262 transceivers, collecting microclimate data, soil moisture, and atmospheric particulate metrics across remote campus regions.",
-      "specs": "ESP32-S3 • SX1262 LoRa 868MHz • BME680 Environmental Sensor • Deep-Sleep 15uA • 3D Printed IP67 Shell",
+      "specs": "ESP32-S3 \u2022 SX1262 LoRa 868MHz \u2022 BME680 Environmental Sensor \u2022 Deep-Sleep 15uA \u2022 3D Printed IP67 Shell",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     },
     {
@@ -64,7 +64,7 @@
       "caption": "Quantized neural model inference running bare-metal on ARM Cortex-M55.",
       "isPatented": true,
       "details": "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
-      "specs": "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
+      "specs": "ARM Cortex-M55 \u2022 Ethos-U55 NPU \u2022 TensorFlow Lite Micro \u2022 18 FPS \u2022 110mW Active Power",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     },
     {
@@ -73,7 +73,7 @@
       "caption": "Late night reflow soldering, logic analyzer debugging, and firmware flashing.",
       "isPatented": false,
       "details": "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
-      "specs": "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
+      "specs": "Rigol DS1054Z Scope \u2022 Saleae Logic Pro \u2022 TS100 Smart Iron \u2022 Lead-Free Sn96.5 SMD Paste",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     },
     {
@@ -82,7 +82,7 @@
       "caption": "Zero-latency FreeRTOS sensor fusion testing on physical silicon.",
       "isPatented": false,
       "details": "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
-      "specs": "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
+      "specs": "FreeRTOS Kernel v10 \u2022 1000Hz IMU Loop \u2022 Extended Kalman Filter (EKF) \u2022 SWD Debug via J-Link",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
     }
   ],
@@ -92,66 +92,66 @@
       "id": "tm-1",
       "name": "Tanmay Tuli",
       "initials": "TT",
-      "role": "Lead Firmware & RTOS Architect",
+      "role": "Lead Firmware Architect",
       "domain": "FIRMWARE",
-      "bio": "Architects multi-threaded embedded firmware for ESP32 and STM32 chips. Specializes in low-latency interrupt handling, FreeRTOS queues, and custom hardware bootloaders.",
-      "shipment": "⚡ Multi-Node LoRa Mesh Router v2",
-      "stack": "FreeRTOS • C/C++ • LoRa",
+      "bio": "Architects multi-threaded embedded firmware for ESP32 and STM32 chips.",
+      "shipment": "\u26a1 Multi-Node LoRa Mesh Router v2",
+      "stack": "Web Dev \u2022 Python \u2022 FreeRTOS \u2022 ESP32-S3",
       "link": "https://github.com/tanmaytuliofficial"
     },
     {
       "id": "tm-2",
-      "name": "Priya Patel",
-      "initials": "PP",
-      "role": "Autonomous Systems & Robotics Lead",
-      "domain": "ROBOTICS",
-      "bio": "Specializes in kinematic motor control, LiDAR sensor fusion, and ROS2 navigation stacks for all-terrain autonomous rover platforms.",
-      "shipment": "🤖 Differential Drive Autonomous Rover",
-      "stack": "ROS2 • LiDAR • STM32 Motor PID",
+      "name": "Vansh Bindal",
+      "initials": "VB",
+      "role": "Full Stack & DevOps",
+      "domain": "COMMUNITY",
+      "bio": "DevOps, containerization, automation scripts, and server infrastructure.",
+      "shipment": "\ud83d\ude80 Dockerized Infrastructure Pipeline",
+      "stack": "Full Stack Dev \u2022 DevOps & Docker \u2022 Automation",
       "link": "https://github.com"
     },
     {
       "id": "tm-3",
-      "name": "Rohan Sen",
-      "initials": "RS",
-      "role": "High-Speed PCB & Hardware Engineer",
-      "domain": "HARDWARE",
-      "bio": "Designs 4-layer impedance-matched PCBs, high-current power distribution networks, and differential USB/Ethernet routing in KiCad.",
-      "shipment": "🖲️ RP2040 Compute Breakout Carrier v1.4",
-      "stack": "KiCad 8 • SMD Soldering • Signal Integrity",
+      "name": "Ansh Jain",
+      "initials": "AJ",
+      "role": "Embedded IoT & Web",
+      "domain": "MEMBER",
+      "bio": "C++ low-level systems, Python tooling, and edge IoT devices.",
+      "shipment": "\ud83d\udce1 IoT Sensor Network Node",
+      "stack": "C++ \u2022 Python \u2022 Exploring IoT \u2022 Web Development",
       "link": "https://github.com"
     },
     {
       "id": "tm-4",
-      "name": "Ananya Verma",
-      "initials": "AV",
-      "role": "TinyML & Edge Vision Specialist",
-      "domain": "EDGE AI",
-      "bio": "Quantizes neural networks down to INT8 precision and compiles them bare-metal onto low-power ARM Cortex-M microcontrollers.",
-      "shipment": "👁️ Sub-Watt Person Detection Camera Node",
-      "stack": "TFLite Micro • CMSIS-NN • Python",
+      "name": "Neerav Madaan",
+      "initials": "NM",
+      "role": "Hardware Systems",
+      "domain": "MEMBER",
+      "bio": "Embedded C bootloaders, ARM Cortex drivers, and PCB schematics.",
+      "shipment": "\ud83d\udd2c Custom ARM Bootloader Node",
+      "stack": "Embedded C \u2022 KiCad PCB \u2022 ARM Cortex",
       "link": "https://github.com"
     },
     {
       "id": "tm-5",
-      "name": "Vikram Nair",
-      "initials": "VN",
-      "role": "Sub-GHz Telemetry & RF Systems",
-      "domain": "PROTOCOLS",
-      "bio": "Builds long-range RF telemetry networks and custom packet framing protocols. Achieved 12km ground-to-ground communication links without cellular data.",
-      "shipment": "📡 433MHz Long-Range Telemetry Node",
-      "stack": "SX1262 • LoRaWAN • RF Circuit Design",
+      "name": "Priya Patel",
+      "initials": "PP",
+      "role": "Autonomous Systems & Robotics Lead",
+      "domain": "ROBOTICS",
+      "bio": "Specializes in kinematic motor control, LiDAR sensor fusion, and ROS2.",
+      "shipment": "\ud83e\udd16 Differential Drive Autonomous Rover",
+      "stack": "ROS 2 \u2022 LiDAR Fusion \u2022 STM32 Motor PID",
       "link": "https://github.com"
     },
     {
       "id": "tm-6",
-      "name": "Aarav Sharma",
-      "initials": "AS",
-      "role": "Hardware Hackathons & Maker Community",
-      "domain": "COMMUNITY",
-      "bio": "Mentors student teams across universities in hardware prototyping, rapid breadboarding, and launching student-led engineering sprints.",
-      "shipment": "🛠️ National Hardware Builder Sprint 2026",
-      "stack": "Maker Workshops • Hackathons • Git",
+      "name": "Rohan Sen",
+      "initials": "RS",
+      "role": "High-Speed PCB & Hardware Engineer",
+      "domain": "HARDWARE",
+      "bio": "Designs 4-layer impedance-matched PCBs and high-current power networks.",
+      "shipment": "\ud83d\uddb2\ufe0f RP2040 Compute Breakout Carrier v1.4",
+      "stack": "KiCad 8 \u2022 SMD Soldering \u2022 Signal Integrity",
       "link": "https://github.com"
     }
   ]
