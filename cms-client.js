@@ -36,6 +36,30 @@
     footerCopyright: "© 2026 Neo Gen Innovators. All rights reserved."
   };
 
+  function updateTeamStatsLayout(data) {
+    const strip = document.getElementById('team-stats-strip');
+    const c1 = document.getElementById('stat-card-1');
+    const c2 = document.getElementById('stat-card-2');
+    const c3 = document.getElementById('stat-card-3');
+    const c4 = document.getElementById('stat-card-4');
+    if (!strip || !c1 || !c2 || !c3 || !c4) return;
+
+    const has3 = !!(data && data.teamStat3Num && data.teamStat3Num.trim());
+    const has4 = !!(data && data.teamStat4Num && data.teamStat4Num.trim());
+
+    if (!has3 && !has4) {
+      strip.className = "grid grid-cols-2 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md max-w-2xl";
+      c3.classList.add('hidden');
+      c4.classList.add('hidden');
+      c2.classList.remove('border-r', 'border-zinc-800/60');
+    } else {
+      strip.className = "grid grid-cols-2 md:grid-cols-4 gap-4 p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md";
+      c2.classList.add('border-r', 'border-zinc-800/60');
+      if (has3) c3.classList.remove('hidden'); else c3.classList.add('hidden');
+      if (has4) c4.classList.remove('hidden'); else c4.classList.add('hidden');
+    }
+  }
+
   function applyContent(data) {
     if (!data) return;
     document.querySelectorAll('[data-cms]').forEach(el => {
@@ -50,6 +74,7 @@
         }
       }
     });
+    updateTeamStatsLayout(data);
   }
 
   function syncCMS() {
