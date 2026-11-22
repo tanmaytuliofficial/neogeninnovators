@@ -28,13 +28,8 @@
             'paper-2': '#eae8e4',
             cream: '#fee9cf',
             ink: '#080b08',
-            brand: '#00e599',
-            'brand-dark': '#059669',
-            emerald: {
-              400: '#34d399',
-              500: '#10b981',
-              DEFAULT: '#00e599',
-            },
+            brand: '#ffffff',
+            'brand-dark': '#d4d4d8',
             pitch: '#050505',
             borderDark: '#1a1f1a',
           }
@@ -280,7 +275,7 @@
       color: #94a3b8;
     }
     .pl-count b {
-      color: #38bdf8;
+      color: #ffffff;
       font-weight: 700;
     }
     .pl-btn {
@@ -288,27 +283,28 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      border: 2px solid #38bdf8;
-      background: rgba(18, 15, 10, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
       display: grid;
       place-items: center;
       cursor: pointer;
-      transition: all .15s ease;
-      box-shadow: 2px 2px 0 0 #120f0a;
+      transition: all .2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
     }
     .pl-btn:hover {
-      background: #38bdf8;
-      color: #120f0a;
-      transform: translate(-1px, -1px);
-      box-shadow: 3px 3px 0 0 #120f0a;
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      transform: scale(1.06);
+      box-shadow: 0 6px 20px rgba(255,255,255,0.25);
     }
     .pl-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 0 0 0 0 #120f0a;
+      transform: scale(0.96);
     }
     .pl-btn:focus-visible {
-      outline: 2px solid #38bdf8;
+      outline: 2px solid #ffffff;
       outline-offset: 2px;
     }
     @keyframes pl-in {
@@ -361,31 +357,31 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
-<body class="selection:bg-[#00e599] selection:text-black">
+<body class="selection:bg-white selection:text-black">
 
   <!-- ================= RETRO TOP NAVIGATION (bits&bytes exact layout) ================= -->
   <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3.5 flex items-center justify-between transition-transform duration-300 bg-[#050505]/85 backdrop-blur-xl border-b border-zinc-800/80">
     <!-- Brand Logo Mark -->
     <a href="#hero" class="flex items-center gap-2 group">
-      <span class="font-mono font-bold text-lg text-[#00e599]">&gt;_</span>
+      <span class="font-mono font-bold text-lg text-white/90">&gt;_</span>
       <div class="flex items-baseline">
-        <span class="font-sans font-bold text-xl sm:text-2xl tracking-tighter text-white leading-none">Neo<span class="text-[#00e599]">Gen</span></span>
+        <span class="font-sans font-bold text-xl sm:text-2xl tracking-tighter text-white leading-none">Neo<span class="text-zinc-400">Gen</span></span>
       </div>
     </a>
 
     <!-- Navigation Shortcuts -->
     <nav class="hidden md:flex items-center gap-3">
       <a href="#hero" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Home</a>
-      <a href="team.html" class="font-mono text-xs text-zinc-300 hover:text-[#00e599] px-3 py-1.5 transition-colors">Our Team</a>
+      <a href="team.html" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Our Team</a>
       <a href="#gallery" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Projects</a>
       <a href="#who-we-are" class="font-mono text-xs text-zinc-300 hover:text-white px-3 py-1.5 transition-colors">Journey</a>
-      <a href="#gallery" class="font-mono text-xs text-[#00e599] font-bold px-3 py-1.5 transition-colors">Gallery</a>
+      <a href="#gallery" class="font-mono text-xs text-white font-bold px-3 py-1.5 transition-colors">Gallery</a>
     </nav>
   </header>
 
 
   <!-- ================= HERO SECTION (Bluish 2-Column Split Layout) ================= -->
-  <section id="hero" class="relative min-h-[100svh] pt-28 pb-16 px-6 sm:px-12 flex flex-col justify-center overflow-hidden" style="background-color: #050505; background-image: radial-gradient(circle at 60% 40%, rgba(0, 229, 153, 0.12) 0%, rgba(5, 5, 5, 0.98) 70%), linear-gradient(rgba(0, 229, 153, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 229, 153, 0.04) 1px, transparent 1px); background-size: 100% 100%, 32px 32px, 32px 32px;">
+  <section id="hero" class="relative min-h-[100svh] pt-28 pb-16 px-6 sm:px-12 flex flex-col justify-center overflow-hidden" style="background-color: #050505; background-image: radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.06) 0%, rgba(5, 5, 5, 0.98) 70%), linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px); background-size: 100% 100%, 36px 36px, 36px 36px;">
     
     <!-- 2-Column Hero Content Grid -->
     <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -396,7 +392,7 @@
         <!-- Big Brand Title: NeoGen INNOVATORS (Image 3 exact font & glow) -->
         <div class="relative inline-block mb-3">
           <h1 class="font-sans font-black text-6xl sm:text-7xl md:text-8xl lg:text-[96px] xl:text-[112px] text-white leading-[0.88] tracking-tighter uppercase select-none drop-shadow-[4px_4px_0_#000]">
-            Neo<span class="text-[#00e599] drop-shadow-[0_0_35px_rgba(0,229,153,0.45)]">Gen</span>
+            Neo<span class="text-transparent bg-clip-text bg-gradient-to-br from-white via-zinc-200 to-zinc-400 drop-shadow-[0_0_35px_rgba(255,255,255,0.2)]">Gen</span>
             <span class="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-[82px] tracking-tight">innovators</span>
           </h1>
         </div>
@@ -413,7 +409,7 @@
 
         <!-- Hero CTAs Bar (Image 3 buttons) -->
         <div class="flex flex-wrap items-center gap-4">
-          <a href="team.html" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-mono text-xs font-bold uppercase tracking-widest bg-[#00e599] hover:bg-[#10b981] text-black shadow-[0_0_25px_rgba(0,229,153,0.35)] hover:scale-105 transition-all cursor-pointer">
+          <a href="team.html" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-mono text-xs font-bold uppercase tracking-widest bg-white hover:bg-zinc-200 text-black shadow-[0_0_30px_rgba(255,255,255,0.18)] hover:scale-105 transition-all cursor-pointer">
             <span data-cms="heroCtaExplore">Explore Team →</span>
           </a>
 
@@ -421,7 +417,7 @@
             <span data-cms="heroCtaJourney">Our Journey</span>
           </a>
 
-          <a href="#gallery" aria-label="Scroll down" class="grid w-12 h-12 place-items-center rounded-full border border-zinc-700 bg-zinc-900/90 text-zinc-300 hover:text-[#00e599] hover:border-[#00e599] transition-all">
+          <a href="#gallery" aria-label="Scroll down" class="grid w-12 h-12 place-items-center rounded-full border border-zinc-700 bg-zinc-900/90 text-zinc-300 hover:text-white hover:border-white transition-all">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v17M5 13l7 7 7-7" stroke-linecap="square"></path></svg>
           </a>
         </div>
@@ -512,15 +508,15 @@
           <div class="lg:col-span-7 flex flex-col justify-center">
             
             <!-- Section Number Tag (Order 0) -->
-            <span class="scroll-reveal-item font-mono text-[11px] font-bold text-emerald-600 tracking-[0.2em] block mb-4 uppercase flex items-center gap-2" data-reveal-order="0">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="scroll-reveal-item font-mono text-[11px] font-bold text-ink/60 tracking-[0.22em] block mb-4 uppercase flex items-center gap-2" data-reveal-order="0">
+              <span class="w-1.5 h-1.5 rounded-full bg-ink animate-pulse"></span>
               <span data-cms="founderTag">§01 — MEET THE FOUNDER // WHO WE ARE</span>
             </span>
 
             <!-- Animated Staggered Headline (Orders 1, 2, 3, 4 strictly sequential) -->
             <h2 class="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-[1.05] tracking-tight mb-5 text-ink">
               <span data-cms="founderLine1" class="scroll-reveal-item block" data-reveal-order="1">HI, MY NAME IS</span>
-              <span data-cms="founderName" class="scroll-reveal-item block text-emerald-600 underline decoration-4 decoration-emerald-500 underline-offset-4" data-reveal-order="2">RAUSHAN KUMAR.</span>
+              <span data-cms="founderName" class="scroll-reveal-item block text-ink underline decoration-4 decoration-ink underline-offset-8" data-reveal-order="2">RAUSHAN KUMAR.</span>
               <span data-cms="founderLine3" class="scroll-reveal-item block mt-1" data-reveal-order="3">I AM THE FOUNDER OF</span>
               <span data-cms="founderLine4" class="scroll-reveal-item block text-zinc-900" data-reveal-order="4">NEO GEN INNOVATORS.</span>
             </h2>
@@ -534,9 +530,9 @@
             <div class="scroll-reveal-item pt-3 flex items-center justify-between border-t-2 border-ink/15" data-reveal-order="7">
               <div>
                 <div data-cms="founderSigName" class="font-sans font-black text-base uppercase text-ink tracking-tight">Raushan Kumar</div>
-                <div data-cms="founderSigTitle" class="font-mono text-[11px] text-emerald-600 font-bold uppercase tracking-wider">FOUNDER &amp; CHIEF ARCHITECT — NEO GEN INNOVATORS</div>
+                <div data-cms="founderSigTitle" class="font-mono text-[11px] text-ink/70 font-bold uppercase tracking-wider">FOUNDER &amp; CHIEF ARCHITECT — NEO GEN INNOVATORS</div>
               </div>
-              <span data-cms="founderBadge" class="font-mono text-[10px] font-bold px-2.5 py-1 bg-ink text-white rounded shadow-[2px_2px_0_0_#00e599]">
+              <span data-cms="founderBadge" class="font-mono text-[10px] font-bold px-2.5 py-1 bg-ink text-white rounded shadow-[3px_3px_0_0_var(--border-ink)]">
                 DIRECTOR
               </span>
             </div>
@@ -546,7 +542,7 @@
           <!-- RIGHT COLUMN: Raushan Kumar Avatar (Animated Order 5) -->
           <div class="lg:col-span-5 flex justify-center items-center">
             <div class="scroll-reveal-item relative w-64 sm:w-72 md:w-80 group" data-reveal-order="5">
-              <div class="absolute inset-0 bg-emerald-500/15 rounded-2xl blur-xl transform group-hover:scale-105 transition-transform pointer-events-none"></div>
+              <div class="absolute inset-0 bg-black/10 rounded-2xl blur-xl transform group-hover:scale-105 transition-transform pointer-events-none"></div>
               
               <div class="relative z-10 rounded-2xl bg-zinc-950 p-2.5 pb-2 border-3 border-ink shadow-[8px_8px_0_0_var(--ink)]">
                 <div class="rounded-xl overflow-hidden bg-black max-h-[360px] sm:max-h-[400px] flex items-center justify-center">
@@ -554,8 +550,8 @@
                 </div>
                 
                 <div class="py-2 px-2.5 flex items-center justify-between text-xs font-mono font-bold text-white bg-zinc-950">
-                  <span class="text-emerald-400 flex items-center gap-1.5 text-[11px]">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span class="text-zinc-200 flex items-center gap-1.5 text-[11px]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
                     <span data-cms="founderSigName">RAUSHAN KUMAR</span>
                   </span>
                   <span data-cms="founderBadge" class="text-zinc-400 uppercase text-[10px] tracking-wider">FOUNDER</span>
@@ -682,8 +678,7 @@
       <div>
         <div class="flex items-baseline mb-2">
           <span class="font-sans font-black text-3xl tracking-tighter text-paper">NEO GEN</span>
-          <span class="font-sans font-black text-3xl tracking-tighter text-cyan-300 ml-2">INNOVATORS</span>
-          <span class="font-sans font-black text-xs text-cyan-400 ml-1">TM</span>
+          <span class="font-sans font-black text-3xl tracking-tighter text-zinc-400 ml-2">INNOVATORS</span>
         </div>
         <p class="font-mono text-xs text-paper/60 uppercase tracking-widest">
           FOUNDED BY RAUSHAN KUMAR // HARDWARE FOR INNOVATORS
@@ -694,7 +689,7 @@
         <a href="#hero" class="bnb-btn bg-paper text-ink h-9 px-4 text-xs font-bold">
           ↑ TOP
         </a>
-        <a href="team.html" class="bnb-btn bnb-btn-cyan h-9 px-5 text-xs font-bold">
+        <a href="team.html" class="bnb-btn bg-white text-ink h-9 px-5 text-xs font-bold shadow-[3px_3px_0_0_var(--border-ink)] hover:bg-zinc-100">
           JOIN NETWORK →
         </a>
       </div>
