@@ -27,16 +27,27 @@ const server = http.createServer((req, res) => {
   let reqPath = req.url.split('?')[0];
 
   // API: Get universal content
-  if (reqPath === '/api/content' && req.method === 'GET') {
-    res.writeHead(200, {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Cache-Control': 'no-cache'
-    });
-    if (fs.existsSync(CONTENT_FILE)) {
-      return fs.createReadStream(CONTENT_FILE).pipe(res);
+  if (reqPath === '/api/content') {
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204, {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, HEAD',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
+      return res.end();
     }
-    return res.end(JSON.stringify({}));
+    if (req.method === 'GET' || req.method === 'HEAD') {
+      res.writeHead(200, {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache'
+      });
+      if (req.method === 'HEAD') return res.end();
+      if (fs.existsSync(CONTENT_FILE)) {
+        return fs.createReadStream(CONTENT_FILE).pipe(res);
+      }
+      return res.end(JSON.stringify({}));
+    }
   }
 
   // API: Save universal content

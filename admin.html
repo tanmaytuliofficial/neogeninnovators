@@ -25,11 +25,6 @@
           colors: {
             brand: '#ffffff',
             'brand-dark': '#d4d4d8',
-            emerald: {
-              400: '#34d399',
-              500: '#00e599',
-              600: '#059669',
-            },
             obsidian: {
               DEFAULT: '#08090d',
               surface: '#0d0f15',
@@ -705,43 +700,72 @@
       {
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
         title: "Silicon Core V2",
-        caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint."
+        caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint.",
+        details: "Engineered from scratch during an intense 48-hour hardware sprint. Silicon Core V2 integrates a dual-core RP2040 MCU with custom power delivery circuitry, dedicated 16MB QSPI flash, and high-speed differential signal routing. The board serves as the fundamental computing hub for NeoGen's modular sensor payloads, running bare-metal C++ firmware with zero external operating system overhead.",
+        specs: "RP2040 Dual-Core • 133MHz • 16MB QSPI Flash • KiCad 8 4-Layer PCB • 3.3V LDO",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop",
         title: "Autonomous Rover",
-        caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi."
+        caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi.",
+        details: "A ground-up cyber-physical rover designed for rugged off-road autonomous exploration and environmental mapping. Features 360-degree LiDAR simultaneous localization and mapping (SLAM), wheel-encoder odometry, and an ultra-reliable 433MHz Sub-GHz telemetry link delivering live kinematic data up to 3 kilometers away without Wi-Fi or cellular connectivity.",
+        specs: "ROS2 Humble • RPLiDAR A1 • STM32F4 Motion Controller • 433MHz LoRa Telemetry • 12V LiFePO4",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop",
         title: "LoRa Mesh Node",
-        caption: "Solar-powered environmental sensor grid running on ESP32."
+        caption: "Solar-powered environmental sensor grid running on ESP32.",
+        details: "Ultra-low power autonomous field node engineered to run indefinitely on a single 18650 lithium cell paired with a 2W solar harvester. Nodes self-organize into a resilient multi-hop mesh network over Semtech SX1262 transceivers, collecting microclimate data, soil moisture, and atmospheric particulate metrics across remote campus regions.",
+        specs: "ESP32-S3 • SX1262 LoRa 868MHz • BME680 Environmental Sensor • Deep-Sleep 15uA • 3D Printed IP67 Shell",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
         title: "Edge AI Vision",
-        caption: "Quantized neural model deployed on bare-metal ARM Cortex."
+        caption: "Quantized neural model deployed on bare-metal ARM Cortex.",
+        details: "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
+        specs: "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
         title: "Maker Lab Night",
-        caption: "Teen builders shipping physical hardware at 3:00 AM."
+        caption: "Teen builders shipping physical hardware at 3:00 AM.",
+        details: "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
+        specs: "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
         title: "Firmware Flash",
-        caption: "Zero-latency FreeRTOS sensor fusion testing."
+        caption: "Zero-latency FreeRTOS sensor fusion testing.",
+        details: "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
+        specs: "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       }
     ];
 
     let currentPolaroids = [];
 
-    function loadPolaroids() {
+    async function loadPolaroids() {
       try {
         const stored = localStorage.getItem('neogen_polaroid_slides');
-        currentPolaroids = stored ? JSON.parse(stored) : [...DEFAULT_POLAROID_SLIDES];
+        if (stored) {
+          currentPolaroids = JSON.parse(stored);
+        } else {
+          // Attempt loading from backend
+          const res = await fetch('/api/content');
+          const data = await res.json();
+          if (data && data.polaroidSlides && data.polaroidSlides.length) {
+            currentPolaroids = data.polaroidSlides;
+          } else {
+            currentPolaroids = JSON.parse(JSON.stringify(DEFAULT_POLAROID_SLIDES));
+          }
+        }
       } catch (e) {
-        currentPolaroids = [...DEFAULT_POLAROID_SLIDES];
+        currentPolaroids = JSON.parse(JSON.stringify(DEFAULT_POLAROID_SLIDES));
       }
       renderPolaroidsEditor();
     }
@@ -756,10 +780,10 @@
       }
 
       container.innerHTML = currentPolaroids.map((slide, index) => `
-        <div class="p-5 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] hover:border-white/[0.14] transition-all flex flex-col md:flex-row items-center gap-5 shadow-xl shadow-black/40" data-slide-index="${index}">
+        <div class="p-6 rounded-2xl bg-[#0c0e14]/90 border border-white/[0.08] hover:border-white/[0.14] transition-all flex flex-col md:flex-row items-start gap-6 shadow-xl shadow-black/40" data-slide-index="${index}">
           
           <!-- Mini Real Polaroid Card Preview -->
-          <div class="w-32 shrink-0 bg-[#fbfaf7] p-2.5 pb-2 rounded-lg shadow-xl border border-zinc-300 text-center select-none transform hover:rotate-1 transition-transform">
+          <div class="w-36 shrink-0 bg-[#fbfaf7] p-3 pb-2 rounded-lg shadow-xl border border-zinc-300 text-center select-none transform hover:rotate-1 transition-transform self-center md:self-start">
             <div class="w-full aspect-square bg-zinc-900 overflow-hidden rounded-sm relative">
               <img src="${slide.image || ''}" alt="${slide.title || 'Print'}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/300x300/18181b/ffffff?text=Image';">
             </div>
@@ -769,12 +793,12 @@
           </div>
 
           <!-- Fields Grid -->
-          <div class="flex-1 w-full space-y-3.5">
+          <div class="flex-1 w-full space-y-4">
             
             <div class="flex items-center justify-between pb-2 border-b border-white/[0.06]">
               <span class="font-mono text-xs font-bold text-zinc-200 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-white"></span>
-                PRINT #${index + 1}
+                PRINT #${index + 1} // PROJECT ARCHITECTURE
               </span>
               
               <div class="flex items-center gap-1">
@@ -793,20 +817,42 @@
             <!-- Image URL -->
             <div>
               <label class="block text-[11px] font-mono text-zinc-400 mb-1">Image URL (Direct image link)</label>
-              <input type="text" value="${slide.image || ''}" oninput="updatePolaroidField(${index}, 'image', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="https://images.unsplash.com/...">
+              <input type="text" value="${slide.image || ''}" oninput="updatePolaroidField(${index}, 'image', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="https://images.unsplash.com/...">
             </div>
 
             <!-- Title & Caption -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5">
               <div class="md:col-span-5">
-                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Handwritten Title</label>
-                <input type="text" value="${slide.title || ''}" oninput="updatePolaroidField(${index}, 'title', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="e.g. Autonomous Drone V1">
+                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Handwritten Title (Card &amp; Header)</label>
+                <input type="text" value="${slide.title || ''}" oninput="updatePolaroidField(${index}, 'title', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="e.g. Autonomous Drone V1">
               </div>
 
               <div class="md:col-span-7">
-                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Bottom Caption Description</label>
-                <input type="text" value="${slide.caption || ''}" oninput="updatePolaroidField(${index}, 'caption', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="e.g. Soldered on custom 4-layer PCB with FreeRTOS">
+                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Brief Subtitle (Hanger Gallery bottom bar)</label>
+                <input type="text" value="${slide.caption || ''}" oninput="updatePolaroidField(${index}, 'caption', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="e.g. Soldered on custom 4-layer PCB with FreeRTOS">
               </div>
+            </div>
+
+            <!-- Elaborated Specifications & Link -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-3.5 pt-1">
+              <div class="md:col-span-7">
+                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Hardware Specs &amp; Tech Stack (Modal Badges)</label>
+                <input type="text" value="${slide.specs || ''}" oninput="updatePolaroidField(${index}, 'specs', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="e.g. RP2040 Dual-Core • 133MHz • KiCad 8 • FreeRTOS">
+              </div>
+
+              <div class="md:col-span-5">
+                <label class="block text-[11px] font-mono text-zinc-400 mb-1">Project Schematic / Repo Link</label>
+                <input type="text" value="${slide.link || ''}" oninput="updatePolaroidField(${index}, 'link', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40" placeholder="https://github.com/...">
+              </div>
+            </div>
+
+            <!-- Elaborated Narrative Story (Shown when clicked) -->
+            <div class="pt-1">
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-[11px] font-mono text-zinc-400">Elaborated Engineering Story &amp; Narrative (Click-to-Expand Modal)</label>
+                <span class="text-[10px] font-mono text-zinc-500">Opens in Full Architecture Dossier</span>
+              </div>
+              <textarea rows="3" oninput="updatePolaroidField(${index}, 'details', this.value)" class="w-full bg-[#08090d] border border-white/[0.09] rounded-xl px-3.5 py-2 font-mono text-xs text-white focus:outline-none focus:border-white/40 leading-relaxed resize-y" placeholder="Describe the engineering challenge, microcontroller architecture, sensor integration, and performance benchmarks...">${slide.details || ''}</textarea>
             </div>
 
           </div>
@@ -845,7 +891,10 @@
           currentPolaroids.push({
             image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
             title: "New Hardware Build",
-            caption: "Custom designed IoT controller board in lab."
+            caption: "Custom designed IoT controller board in lab.",
+            details: "Detailed engineering narrative of this custom embedded hardware build.",
+            specs: "STM32 / ESP32 • Custom 4-Layer PCB • FreeRTOS",
+            link: "https://github.com/tanmaytuliofficial/neogeninnovators"
           });
           renderPolaroidsEditor();
           const container = document.getElementById('polaroid-list-container');
@@ -868,10 +917,26 @@
 
       const saveBtn = document.getElementById('btn-save-polaroids');
       if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
+        saveBtn.addEventListener('click', async () => {
           localStorage.setItem('neogen_polaroid_slides', JSON.stringify(currentPolaroids));
           window.dispatchEvent(new Event('storage'));
-          showToast('Hanging Polaroid prints saved! Live site updated.');
+
+          // Also sync to server-side content file
+          try {
+            let existingContent = {};
+            try {
+              const res = await fetch('/api/content');
+              existingContent = await res.json();
+            } catch (e) {}
+            existingContent.polaroidSlides = currentPolaroids;
+            await fetch('/api/content', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(existingContent)
+            });
+          } catch (e) {}
+
+          showToast('Hanging Polaroid prints & elaborated specs saved! Live site updated.');
         });
       }
     }
@@ -924,12 +989,18 @@
       localStorage.setItem('neogen_site_content', JSON.stringify(data));
       window.dispatchEvent(new Event('storage'));
 
-      // 2. Persist to server API
+      // 2. Persist to server API (merge to preserve polaroidSlides)
       try {
+        let existing = {};
+        try {
+          const res = await fetch('/api/content');
+          existing = await res.json();
+        } catch (e) {}
+        const merged = { ...existing, ...data };
         await fetch('/api/content', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+          body: JSON.stringify(merged)
         });
       } catch (err) {}
 

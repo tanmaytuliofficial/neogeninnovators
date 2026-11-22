@@ -462,8 +462,13 @@
 
       <!-- Bottom Interactive Control Bar -->
       <div class="pl-bar">
-        <div class="pl-cap" id="pl-caption-box" aria-hidden="true">
-          <span class="pl-title" id="pl-title-text">Silicon Core V2</span>
+        <div class="pl-cap group cursor-pointer" id="pl-caption-box" role="button" aria-label="Click to elaborate project details">
+          <div class="flex items-center gap-2.5">
+            <span class="pl-title" id="pl-title-text">Silicon Core V2</span>
+            <span class="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-white/70 bg-white/10 px-2 py-0.5 rounded-full border border-white/20 group-hover:bg-white group-hover:text-black transition-all">
+              ELABORATE ↗
+            </span>
+          </div>
           <span class="pl-sub" id="pl-sub-text">Custom RP2040 breakout board soldered during 48hr hardware sprint.</span>
         </div>
         
@@ -506,12 +511,6 @@
           
           <!-- LEFT COLUMN: Animated Scroll-Reveal Text -->
           <div class="lg:col-span-7 flex flex-col justify-center">
-            
-            <!-- Section Number Tag (Order 0) -->
-            <span class="scroll-reveal-item font-mono text-[11px] font-bold text-ink/60 tracking-[0.22em] block mb-4 uppercase flex items-center gap-2" data-reveal-order="0">
-              <span class="w-1.5 h-1.5 rounded-full bg-ink animate-pulse"></span>
-              <span data-cms="founderTag">§01 — MEET THE FOUNDER // WHO WE ARE</span>
-            </span>
 
             <!-- Animated Staggered Headline (Orders 1, 2, 3, 4 strictly sequential) -->
             <h2 class="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-[1.05] tracking-tight mb-5 text-ink">
@@ -539,34 +538,32 @@
 
           </div>
 
-          <!-- RIGHT COLUMN: Raushan Kumar Avatar (Animated Order 5) -->
+          <!-- RIGHT COLUMN: Raushan Kumar Character Materialization (Builds up on scroll, without background) -->
           <div class="lg:col-span-5 flex justify-center items-center">
-            <div class="scroll-reveal-item relative w-64 sm:w-72 md:w-80 group" data-reveal-order="5">
-              <div class="absolute inset-0 bg-black/10 rounded-2xl blur-xl transform group-hover:scale-105 transition-transform pointer-events-none"></div>
+            <div id="character-build-container" class="relative w-64 sm:w-72 md:w-80 h-[380px] sm:h-[460px] md:h-[500px] flex items-end justify-center select-none">
               
-              <div class="relative z-10 rounded-2xl bg-zinc-950 p-2.5 pb-2 border-3 border-ink shadow-[8px_8px_0_0_var(--ink)]">
-                <div class="rounded-xl overflow-hidden bg-black max-h-[360px] sm:max-h-[400px] flex items-center justify-center">
-                  <img data-cms="founderAvatarUrl" src="raushan-avatar.png" alt="Raushan Kumar - Founder of Neo Gen Innovators" class="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300">
-                </div>
-                
-                <div class="py-2 px-2.5 flex items-center justify-between text-xs font-mono font-bold text-white bg-zinc-950">
-                  <span class="text-zinc-200 flex items-center gap-1.5 text-[11px]">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                    <span data-cms="founderSigName">RAUSHAN KUMAR</span>
-                  </span>
-                  <span data-cms="founderBadge" class="text-zinc-400 uppercase text-[10px] tracking-wider">FOUNDER</span>
+              <!-- Subtle Blueprint Silhouette (Base guide before solidification) -->
+              <div id="char-blueprint" class="absolute inset-0 w-full h-full flex items-end justify-center opacity-15 filter grayscale contrast-125 transition-opacity pointer-events-none">
+                <img src="raushan-avatar-nobg.png" alt="" class="w-auto h-full max-h-[500px] object-contain">
+              </div>
+
+              <!-- Real Transparent Cutout (Progressively revealed via clip-path from bottom up on scroll) -->
+              <div id="char-solid" class="relative z-10 w-full h-full flex items-end justify-center pointer-events-none" style="clip-path: inset(100% 0 0 0); transition: clip-path 0.08s ease-out;">
+                <img src="raushan-avatar-nobg.png" alt="Raushan Kumar - Founder" class="w-auto h-full max-h-[500px] object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.22)]">
+              </div>
+
+              <!-- Glowing Laser Build-Line Frontier Beam -->
+              <div id="char-laser-beam" class="absolute left-[-10%] right-[-10%] z-20 pointer-events-none opacity-0 transition-opacity duration-200" style="bottom: 0%; height: 2px; background: linear-gradient(90deg, transparent, rgba(18, 15, 10, 0.8) 25%, #000 50%, rgba(18, 15, 10, 0.8) 75%, transparent); box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);">
+                <!-- Build indicator badge -->
+                <div class="absolute -top-3.5 right-2 font-mono text-[9px] font-bold tracking-widest text-ink/80 bg-paper px-2 py-0.5 rounded border border-ink/20 shadow-sm">
+                  <span id="char-pct-text">BUILDING 0%</span>
                 </div>
               </div>
+
             </div>
           </div>
 
         </div>
-
-      </div>
-
-    </div>
-
-  </section>
 
       </div>
 
@@ -697,6 +694,76 @@
     </div>
 
   </footer>
+
+
+  <!-- ================= ELABORATED PROJECT CASE STUDY MODAL ================= -->
+  <div id="project-elaborate-modal" class="fixed inset-0 z-[999] opacity-0 pointer-events-none transition-all duration-300 flex items-center justify-center p-4 sm:p-6 md:p-10 select-none">
+    <!-- Backdrop -->
+    <div id="project-modal-backdrop" class="absolute inset-0 bg-black/90 backdrop-blur-xl"></div>
+
+    <!-- Modal Dialog Window -->
+    <div class="modal-dialog-box relative z-10 w-full max-w-4xl max-h-[90vh] bg-[#0c0e14] border border-white/20 rounded-2xl shadow-[0_25px_80px_rgba(0,0,0,0.85)] flex flex-col overflow-hidden text-zinc-100 transform scale-95 transition-transform duration-300">
+      
+      <!-- Modal Top Bar -->
+      <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-zinc-950/80">
+        <div class="flex items-center gap-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></span>
+          <span class="font-mono text-xs font-bold uppercase tracking-wider text-zinc-300">PROJECT ARCHITECTURE DOSSIER</span>
+        </div>
+        <button id="project-modal-close" type="button" class="px-3 py-1.5 text-zinc-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer font-mono text-xs">
+          ✕ ESC / CLOSE
+        </button>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="p-6 sm:p-8 overflow-y-auto space-y-6">
+        
+        <!-- Hero Image & Title Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-5 rounded-xl overflow-hidden border border-white/10 bg-black aspect-video md:aspect-square flex items-center justify-center shadow-xl">
+            <img id="modal-project-img" src="" alt="Project Photo" class="w-full h-full object-cover">
+          </div>
+          <div class="md:col-span-7 space-y-3">
+            <div id="modal-project-badge" class="inline-block px-3 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest bg-white/10 text-white border border-white/20">
+              PHYSICAL SILICON
+            </div>
+            <h2 id="modal-project-title" class="font-sans font-black text-2xl sm:text-4xl uppercase text-white tracking-tight">
+              Silicon Core V2
+            </h2>
+            <p id="modal-project-subtitle" class="font-mono text-xs sm:text-sm text-zinc-400 leading-relaxed">
+              Custom RP2040 breakout board soldered during 48hr hardware sprint.
+            </p>
+          </div>
+        </div>
+
+        <!-- Hardware Specs Strip -->
+        <div class="p-4 rounded-xl bg-zinc-950/90 border border-white/10 space-y-2">
+          <div class="font-mono text-[10px] font-bold text-zinc-500 uppercase tracking-widest">HARDWARE ARCHITECTURE &amp; TECH SPECS</div>
+          <div id="modal-project-specs" class="font-mono text-xs text-white flex flex-wrap gap-2">
+            <!-- Specs pills -->
+          </div>
+        </div>
+
+        <!-- Elaborated Project Story -->
+        <div class="space-y-3">
+          <div class="font-mono text-[10px] font-bold text-zinc-500 uppercase tracking-widest">ENGINEERING STORY &amp; IMPLEMENTATION</div>
+          <p id="modal-project-details" class="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans whitespace-pre-line">
+            Detailed case study goes here...
+          </p>
+        </div>
+
+        <!-- Action Links -->
+        <div class="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+          <a id="modal-project-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-widest bg-white hover:bg-zinc-200 text-black shadow-lg transition-all">
+            <span>Inspect Schematics / Repository →</span>
+          </a>
+          <span class="font-mono text-xs text-zinc-500">NEOGEN INNOVATORS // SHIP PHYSICAL SILICON</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
 
   <!-- ================= FULLSCREEN CINEMA MODAL ================= -->
@@ -885,32 +952,50 @@
       {
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
         title: "Silicon Core V2",
-        caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint."
+        caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint.",
+        details: "Engineered from scratch during an intense 48-hour hardware sprint. Silicon Core V2 integrates a dual-core RP2040 MCU with custom power delivery circuitry, dedicated 16MB QSPI flash, and high-speed differential signal routing. The board serves as the fundamental computing hub for NeoGen's modular sensor payloads, running bare-metal C++ firmware with zero external operating system overhead.",
+        specs: "RP2040 Dual-Core • 133MHz • 16MB QSPI Flash • KiCad 8 4-Layer PCB • 3.3V LDO",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop",
         title: "Autonomous Rover",
-        caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi."
+        caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi.",
+        details: "A ground-up cyber-physical rover designed for rugged off-road autonomous exploration and environmental mapping. Features 360-degree LiDAR simultaneous localization and mapping (SLAM), wheel-encoder odometry, and an ultra-reliable 433MHz Sub-GHz telemetry link delivering live kinematic data up to 3 kilometers away without Wi-Fi or cellular connectivity.",
+        specs: "ROS2 Humble • RPLiDAR A1 • STM32F4 Motion Controller • 433MHz LoRa Telemetry • 12V LiFePO4",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop",
         title: "LoRa Mesh Node",
-        caption: "Solar-powered environmental sensor grid running on ESP32."
+        caption: "Solar-powered environmental sensor grid running on ESP32.",
+        details: "Ultra-low power autonomous field node engineered to run indefinitely on a single 18650 lithium cell paired with a 2W solar harvester. Nodes self-organize into a resilient multi-hop mesh network over Semtech SX1262 transceivers, collecting microclimate data, soil moisture, and atmospheric particulate metrics across remote campus regions.",
+        specs: "ESP32-S3 • SX1262 LoRa 868MHz • BME680 Environmental Sensor • Deep-Sleep 15uA • 3D Printed IP67 Shell",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
         title: "Edge AI Vision",
-        caption: "Quantized neural model deployed on bare-metal ARM Cortex."
+        caption: "Quantized neural model inference running bare-metal on ARM Cortex-M55.",
+        details: "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
+        specs: "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
         title: "Maker Lab Night",
-        caption: "Teen builders shipping physical hardware at 3:00 AM."
+        caption: "Late night reflow soldering, logic analyzer debugging, and firmware flashing.",
+        details: "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
+        specs: "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       },
       {
         image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
         title: "Firmware Flash",
-        caption: "Zero-latency FreeRTOS sensor fusion testing."
+        caption: "Zero-latency FreeRTOS sensor fusion testing on physical silicon.",
+        details: "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
+        specs: "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
+        link: "https://github.com/tanmaytuliofficial/neogeninnovators"
       }
     ];
 
@@ -953,8 +1038,11 @@
 
         this.sag = 46;
         this.swing = 1;
-        this.autoplayInterval = 4500;
+        this.autoplayInterval = 2000; // 2 seconds transition
         this.cardWidth = 280;
+
+        this.isHovered = false;
+        this.isModalOpen = false;
 
         this.loadSlides();
         this.init();
@@ -964,7 +1052,22 @@
         try {
           const stored = localStorage.getItem('neogen_polaroid_slides');
           if (stored) {
-            this.slides = JSON.parse(stored);
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed) && parsed.length) {
+              this.slides = parsed.map((s, i) => {
+                const def = DEFAULT_POLAROID_SLIDES[i] || DEFAULT_POLAROID_SLIDES[0];
+                return {
+                  image: s.image || def.image,
+                  title: s.title || def.title,
+                  caption: s.caption || def.caption,
+                  details: s.details || def.details,
+                  specs: s.specs || def.specs,
+                  link: s.link || def.link
+                };
+              });
+            } else {
+              this.slides = [...DEFAULT_POLAROID_SLIDES];
+            }
           } else {
             this.slides = [...DEFAULT_POLAROID_SLIDES];
           }
@@ -998,13 +1101,17 @@
 
         this.slides.forEach((s, i) => {
           const el = document.createElement('div');
-          el.className = 'pl-card';
+          el.className = 'pl-card cursor-pointer group';
           el.setAttribute('data-i', i);
           el.setAttribute('data-on', i === 0 ? '1' : '0');
+          el.setAttribute('title', 'Click to elaborate project');
           el.innerHTML = `
-            <div class="pl-print">
-              <div class="pl-shot">
+            <div class="pl-print transition-transform group-hover:scale-[1.03]">
+              <div class="pl-shot relative overflow-hidden">
                 <img src="${s.image || ''}" alt="${s.title || ''}" draggable="false" onerror="this.src='https://placehold.co/300x300/18181b/ffffff?text=Neo+Gen';">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-2.5 py-1 rounded bg-white text-black font-mono text-[10px] font-bold shadow-lg">ELABORATE ↗</span>
+                </div>
               </div>
               <div class="pl-note">${s.title || 'Untitled'}</div>
             </div>
@@ -1032,7 +1139,8 @@
 
       step(dir) {
         this.lastTouch = performance.now();
-        this.goTo(clamp(this.activeRef + dir, 0, this.n - 1));
+        const next = (this.activeRef + dir + this.n) % this.n;
+        this.goTo(next);
       }
 
       updateCaption(i) {
@@ -1049,6 +1157,10 @@
 
       setupEvents() {
         window.addEventListener('resize', () => this.updateDimensions());
+
+        // Hover pause/resume
+        this.root.addEventListener('mouseenter', () => { this.isHovered = true; });
+        this.root.addEventListener('mouseleave', () => { this.isHovered = false; });
 
         // Storage listener for Admin sync
         window.addEventListener('storage', () => {
@@ -1098,13 +1210,21 @@
             return;
           }
 
-          // Click print to center
+          // Click print to center & open elaborate case study
           const card = e.target.closest('[data-i]');
           if (card) {
             const idx = Number(card.getAttribute('data-i'));
             this.goTo(idx);
+            this.openElaborateModal(idx);
           }
         });
+
+        // Click caption box to elaborate
+        if (this.captionBox) {
+          this.captionBox.addEventListener('click', () => {
+            this.openElaborateModal(this.activeRef);
+          });
+        }
 
         // Buttons
         if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.step(-1));
@@ -1115,12 +1235,82 @@
           if (e.key === 'ArrowRight') { this.step(1); e.preventDefault(); }
           else if (e.key === 'ArrowLeft') { this.step(-1); e.preventDefault(); }
         });
+
+        // Modal Close handlers
+        const modal = document.getElementById('project-elaborate-modal');
+        const modalClose = document.getElementById('project-modal-close');
+        const modalBackdrop = document.getElementById('project-modal-backdrop');
+        const closeModal = () => {
+          if (!modal) return;
+          modal.classList.add('opacity-0', 'pointer-events-none');
+          const dlg = modal.querySelector('.modal-dialog-box');
+          if (dlg) { dlg.classList.remove('scale-100'); dlg.classList.add('scale-95'); }
+          this.isModalOpen = false;
+        };
+        if (modalClose) modalClose.addEventListener('click', closeModal);
+        if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && this.isModalOpen) closeModal();
+        });
+
+        // Real-time synchronization when admin saves
+        window.addEventListener('storage', (e) => {
+          if (e.key === 'neogen_polaroid_slides') {
+            this.loadSlides();
+            this.n = this.slides.length;
+            this.buildCardsDOM();
+            this.updateDimensions();
+          }
+        });
+      }
+
+      openElaborateModal(idx) {
+        const s = this.slides[idx];
+        if (!s) return;
+        this.isModalOpen = true;
+        const modal = document.getElementById('project-elaborate-modal');
+        if (!modal) return;
+
+        const imgEl = document.getElementById('modal-project-img');
+        if (imgEl) imgEl.src = s.image || '';
+
+        const titleEl = document.getElementById('modal-project-title');
+        if (titleEl) titleEl.innerText = s.title || 'Untitled Project';
+
+        const subEl = document.getElementById('modal-project-subtitle');
+        if (subEl) subEl.innerText = s.caption || '';
+
+        const detailsEl = document.getElementById('modal-project-details');
+        if (detailsEl) detailsEl.innerText = s.details || s.caption || 'Full engineering schematics, bill of materials, and bare-metal firmware implementations are verified by the NeoGen hardware squad.';
+
+        const specsContainer = document.getElementById('modal-project-specs');
+        if (specsContainer) {
+          specsContainer.innerHTML = '';
+          const specsList = (s.specs || 'Custom PCB • Embedded C++ • Bare-Metal Silicon').split(/[•,]/).map(t => t.trim()).filter(Boolean);
+          specsList.forEach(spec => {
+            const span = document.createElement('span');
+            span.className = 'px-3 py-1 rounded-md bg-white/5 border border-white/15 text-zinc-300 text-[11px] font-mono';
+            span.innerText = spec;
+            specsContainer.appendChild(span);
+          });
+        }
+
+        const linkBtn = document.getElementById('modal-project-link');
+        if (linkBtn) {
+          linkBtn.href = s.link || 'https://github.com/tanmaytuliofficial/neogeninnovators';
+        }
+
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        const dlg = modal.querySelector('.modal-dialog-box');
+        if (dlg) { dlg.classList.remove('scale-95'); dlg.classList.add('scale-100'); }
       }
 
       startAutoplay() {
-        setInterval(() => {
-          if (document.hidden || this.drag || performance.now() - this.lastTouch < this.autoplayInterval) return;
-          this.goTo(this.activeRef >= this.n - 1 ? 0 : this.activeRef + 1);
+        if (this.autoTimer) clearInterval(this.autoTimer);
+        this.autoTimer = setInterval(() => {
+          if (document.hidden || this.drag || this.isHovered || this.isModalOpen) return;
+          const next = this.activeRef >= this.n - 1 ? 0 : this.activeRef + 1;
+          this.goTo(next);
         }, this.autoplayInterval);
       }
 
@@ -1189,7 +1379,7 @@
       }
     }
 
-    // ================= STICKY SCROLL REVEAL ANIMATION (MEET THE FOUNDER) =================
+    // ================= STICKY SCROLL REVEAL & CHARACTER MATERIALIZATION =================
     function initScrollReveal() {
       const section = document.getElementById('who-we-are');
       if (!section) return;
@@ -1198,58 +1388,66 @@
       if (!items.length) return;
 
       let ticking = false;
+      let maxProgress = 0; // Tracks maximum progress achieved so text and character NEVER unreveal!
 
       function updateReveal() {
         const rect = section.getBoundingClientRect();
         const vh = window.innerHeight || document.documentElement.clientHeight;
         const totalStickyDistance = section.offsetHeight - vh;
 
-        // If user hasn't scrolled anywhere near this section yet
-        if (rect.top > vh * 0.4) {
-          items.forEach(item => item.classList.remove('revealed'));
-          return;
-        }
-
-        // When approaching top (from rect.top = vh * 0.4 down to rect.top = 0)
-        // Reveal order 0 (§01 — MEET THE FOUNDER) so it's ready when pinned begins
-        const order0 = section.querySelector('[data-reveal-order="0"]');
-        if (order0) order0.classList.add('revealed');
-
         // Progress inside the pinned 240vh scroll track:
-        // rect.top is 0 when pinned begins, and goes down to -totalStickyDistance
-        let progress = 0;
         if (rect.top <= 0) {
-          progress = Math.min(1, Math.max(0, (-rect.top) / totalStickyDistance));
+          const currentProgress = Math.min(1, Math.max(0, (-rect.top) / totalStickyDistance));
+          maxProgress = Math.max(maxProgress, currentProgress);
         }
 
-        // Distinct, widely-spaced thresholds so lines strictly reveal ONE BY ONE on scroll:
-        // Order 1 ("HI, MY NAME IS")         -> at progress >= 0.08
-        // Order 2 ("RAUSHAN KUMAR.")         -> at progress >= 0.24
-        // Order 3 ("I AM THE FOUNDER OF")    -> at progress >= 0.42
-        // Order 4 ("NEO GEN INNOVATORS.")    -> at progress >= 0.60
-        // Order 5 (Avatar Card on right)     -> at progress >= 0.30
-        // Order 6 (Philosophy quote)         -> at progress >= 0.75
-        // Order 7 (Founder signature/badge)  -> at progress >= 0.88
+        // Distinct, sequential thresholds for text reveal:
         const stepThresholds = {
-          0: 0.0,
-          1: 0.08,
-          2: 0.24,
-          3: 0.42,
-          4: 0.60,
-          5: 0.30,
-          6: 0.75,
-          7: 0.88
+          1: 0.06,
+          2: 0.18,
+          3: 0.32,
+          4: 0.46,
+          6: 0.65,
+          7: 0.80
         };
 
+        // Text items reveal strictly based on maxProgress: once revealed, it NEVER unreveals on scroll back!
         items.forEach(item => {
           const order = parseInt(item.getAttribute('data-reveal-order') || '0', 10);
           const requiredProgress = stepThresholds[order] !== undefined ? stepThresholds[order] : 0.0;
-          if (progress >= requiredProgress) {
+          if (maxProgress >= requiredProgress) {
             item.classList.add('revealed');
-          } else {
-            item.classList.remove('revealed');
           }
         });
+
+        // Dynamic Character Progressive Build-Up (Materialization on Scroll)
+        const charSolid = document.getElementById('char-solid');
+        const charLaser = document.getElementById('char-laser-beam');
+        const charPctText = document.getElementById('char-pct-text');
+        const charStart = 0.08;
+        const charEnd = 0.65;
+
+        let charProgress = 0;
+        if (maxProgress > charStart) {
+          charProgress = Math.min(1, Math.max(0, (maxProgress - charStart) / (charEnd - charStart)));
+        }
+
+        if (charSolid && charLaser) {
+          // Reveal from bottom up smoothly via clip-path
+          const topInset = Math.max(0, Math.min(100, (1 - charProgress) * 100));
+          charSolid.style.clipPath = `inset(${topInset.toFixed(1)}% 0 0 0)`;
+
+          if (charProgress > 0 && charProgress < 0.99) {
+            charLaser.style.opacity = '1';
+            charLaser.style.bottom = `${(charProgress * 100).toFixed(1)}%`;
+            if (charPctText) charPctText.innerText = `MATERIALIZING ${Math.round(charProgress * 100)}%`;
+          } else if (charProgress >= 0.99) {
+            charLaser.style.opacity = '0';
+            if (charPctText) charPctText.innerText = `BUILD COMPLETE`;
+          } else {
+            charLaser.style.opacity = '0';
+          }
+        }
       }
 
       window.addEventListener('scroll', () => {
