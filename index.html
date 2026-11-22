@@ -501,10 +501,10 @@
   <!-- ================= WHO WE ARE SECTION (Sticky Line-by-Line Scroll Reveal) ================= -->
   <section id="who-we-are" class="tone-paper relative bg-paper text-ink border-b-3 border-ink" style="min-height: 240vh;">
     
-    <!-- Pinned Viewport Container -->
-    <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+    <!-- Pinned Viewport Container (pt-20 ensures clear breathing room below the fixed header) -->
+    <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden pt-20 sm:pt-24 pb-6">
       
-      <div class="max-w-6xl w-full mx-auto px-6 sm:px-12 py-6">
+      <div class="max-w-6xl w-full mx-auto px-6 sm:px-12 py-2">
         
         <!-- 2-Column Grid: Animated Text on Left, Avatar on Right -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -513,7 +513,7 @@
           <div class="lg:col-span-7 flex flex-col justify-center">
 
             <!-- Animated Staggered Headline (Orders 1, 2, 3, 4 strictly sequential) -->
-            <h2 class="font-sans font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase leading-[1.05] tracking-tight mb-5 text-ink">
+            <h2 class="font-sans font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase leading-[1.1] tracking-tight mb-4 text-ink">
               <span data-cms="founderLine1" class="scroll-reveal-item block" data-reveal-order="1">HI, MY NAME IS</span>
               <span data-cms="founderName" class="scroll-reveal-item block text-ink underline decoration-4 decoration-ink underline-offset-8" data-reveal-order="2">RAUSHAN KUMAR.</span>
               <span data-cms="founderLine3" class="scroll-reveal-item block mt-1" data-reveal-order="3">I AM THE FOUNDER OF</span>
@@ -521,7 +521,7 @@
             </h2>
 
             <!-- Concise Philosophy (Order 6) -->
-            <p data-cms="founderQuote" class="scroll-reveal-item font-mono text-xs sm:text-sm leading-relaxed text-ink/80 font-medium mb-6" data-reveal-order="6">
+            <p data-cms="founderQuote" class="scroll-reveal-item font-mono text-xs sm:text-sm leading-relaxed text-ink/80 font-medium mb-4" data-reveal-order="6">
               "We don't build slide decks or pitch imaginary AI wrappers. At Neo Gen Innovators, our mission is to unite passionate builders across India to solder custom microcontrollers, write bare-metal RTOS firmware, and deploy quantized neural models directly onto physical silicon."
             </p>
 
@@ -540,16 +540,16 @@
 
           <!-- RIGHT COLUMN: Raushan Kumar Character Materialization (Builds up on scroll, without background) -->
           <div class="lg:col-span-5 flex justify-center items-center">
-            <div id="character-build-container" class="relative w-64 sm:w-72 md:w-80 h-[380px] sm:h-[460px] md:h-[500px] flex items-end justify-center select-none">
+            <div id="character-build-container" class="relative w-56 sm:w-64 md:w-72 h-[320px] sm:h-[380px] md:h-[420px] flex items-end justify-center select-none">
               
               <!-- Subtle Blueprint Silhouette (Base guide before solidification) -->
               <div id="char-blueprint" class="absolute inset-0 w-full h-full flex items-end justify-center opacity-15 filter grayscale contrast-125 transition-opacity pointer-events-none">
-                <img src="raushan-avatar-nobg.png" alt="" class="w-auto h-full max-h-[500px] object-contain">
+                <img src="raushan-avatar-nobg.png" alt="" class="w-auto h-full max-h-[420px] object-contain">
               </div>
 
               <!-- Real Transparent Cutout (Progressively revealed via clip-path from bottom up on scroll) -->
               <div id="char-solid" class="relative z-10 w-full h-full flex items-end justify-center pointer-events-none" style="clip-path: inset(100% 0 0 0); transition: clip-path 0.08s ease-out;">
-                <img src="raushan-avatar-nobg.png" alt="Raushan Kumar - Founder" class="w-auto h-full max-h-[500px] object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.22)]">
+                <img src="raushan-avatar-nobg.png" alt="Raushan Kumar - Founder" class="w-auto h-full max-h-[420px] object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.22)]">
               </div>
 
               <!-- Glowing Laser Build-Line Frontier Beam -->
@@ -720,12 +720,25 @@
         
         <!-- Hero Image & Title Grid -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-          <div class="md:col-span-5 rounded-xl overflow-hidden border border-white/10 bg-black aspect-video md:aspect-square flex items-center justify-center shadow-xl">
+          <div class="md:col-span-5 rounded-xl overflow-hidden border border-white/10 bg-black aspect-video md:aspect-square flex items-center justify-center shadow-xl relative">
             <img id="modal-project-img" src="" alt="Project Photo" class="w-full h-full object-cover">
+            <div id="modal-project-stamp" class="absolute bottom-3 right-3 pointer-events-none z-10 transform -rotate-12 select-none hidden">
+              <div class="px-3 py-1 rounded border-2 border-red-500 bg-red-950/90 text-red-400 font-mono text-xs font-black tracking-widest uppercase shadow-[0_0_15px_rgba(239,68,68,0.6)] flex items-center gap-1.5">
+                <span class="text-sm leading-none">★</span>
+                <span>PATENTED</span>
+                <span class="text-sm leading-none">★</span>
+              </div>
+            </div>
           </div>
           <div class="md:col-span-7 space-y-3">
-            <div id="modal-project-badge" class="inline-block px-3 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest bg-white/10 text-white border border-white/20">
-              PHYSICAL SILICON
+            <div class="flex flex-wrap items-center gap-2">
+              <div id="modal-project-badge" class="inline-block px-3 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest bg-white/10 text-white border border-white/20">
+                PHYSICAL SILICON
+              </div>
+              <div id="modal-patent-badge" class="hidden px-2.5 py-1 rounded-full font-mono text-[10px] font-bold uppercase tracking-widest bg-red-950/80 text-red-400 border border-red-500/50 flex items-center gap-1.5 shadow-[0_0_10px_rgba(239,68,68,0.25)]">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                <span>OFFICIALLY PATENTED</span>
+              </div>
             </div>
             <h2 id="modal-project-title" class="font-sans font-black text-2xl sm:text-4xl uppercase text-white tracking-tight">
               Silicon Core V2
@@ -953,6 +966,7 @@
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
         title: "Silicon Core V2",
         caption: "Custom RP2040 breakout board soldered during 48hr hardware sprint.",
+        isPatented: true,
         details: "Engineered from scratch during an intense 48-hour hardware sprint. Silicon Core V2 integrates a dual-core RP2040 MCU with custom power delivery circuitry, dedicated 16MB QSPI flash, and high-speed differential signal routing. The board serves as the fundamental computing hub for NeoGen's modular sensor payloads, running bare-metal C++ firmware with zero external operating system overhead.",
         specs: "RP2040 Dual-Core • 133MHz • 16MB QSPI Flash • KiCad 8 4-Layer PCB • 3.3V LDO",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -961,6 +975,7 @@
         image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop",
         title: "Autonomous Rover",
         caption: "LIDAR mapping and Sub-GHz telemetry testing in Delhi.",
+        isPatented: true,
         details: "A ground-up cyber-physical rover designed for rugged off-road autonomous exploration and environmental mapping. Features 360-degree LiDAR simultaneous localization and mapping (SLAM), wheel-encoder odometry, and an ultra-reliable 433MHz Sub-GHz telemetry link delivering live kinematic data up to 3 kilometers away without Wi-Fi or cellular connectivity.",
         specs: "ROS2 Humble • RPLiDAR A1 • STM32F4 Motion Controller • 433MHz LoRa Telemetry • 12V LiFePO4",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -969,6 +984,7 @@
         image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop",
         title: "LoRa Mesh Node",
         caption: "Solar-powered environmental sensor grid running on ESP32.",
+        isPatented: false,
         details: "Ultra-low power autonomous field node engineered to run indefinitely on a single 18650 lithium cell paired with a 2W solar harvester. Nodes self-organize into a resilient multi-hop mesh network over Semtech SX1262 transceivers, collecting microclimate data, soil moisture, and atmospheric particulate metrics across remote campus regions.",
         specs: "ESP32-S3 • SX1262 LoRa 868MHz • BME680 Environmental Sensor • Deep-Sleep 15uA • 3D Printed IP67 Shell",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -977,6 +993,7 @@
         image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
         title: "Edge AI Vision",
         caption: "Quantized neural model inference running bare-metal on ARM Cortex-M55.",
+        isPatented: true,
         details: "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
         specs: "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -985,6 +1002,7 @@
         image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
         title: "Maker Lab Night",
         caption: "Late night reflow soldering, logic analyzer debugging, and firmware flashing.",
+        isPatented: false,
         details: "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
         specs: "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -993,6 +1011,7 @@
         image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
         title: "Firmware Flash",
         caption: "Zero-latency FreeRTOS sensor fusion testing on physical silicon.",
+        isPatented: false,
         details: "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
         specs: "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
         link: "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -1062,7 +1081,8 @@
                   caption: s.caption || def.caption,
                   details: s.details || def.details,
                   specs: s.specs || def.specs,
-                  link: s.link || def.link
+                  link: s.link || def.link,
+                  isPatented: s.isPatented !== undefined ? s.isPatented : (def.isPatented || false)
                 };
               });
             } else {
@@ -1112,6 +1132,15 @@
                 <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <span class="px-2.5 py-1 rounded bg-white text-black font-mono text-[10px] font-bold shadow-lg">ELABORATE ↗</span>
                 </div>
+                ${s.isPatented ? `
+                  <div class="absolute bottom-2.5 right-2 pointer-events-none z-10 transform -rotate-12 select-none">
+                    <div class="px-2 py-0.5 rounded border-2 border-red-500 bg-red-950/90 text-red-400 font-mono text-[9px] font-black tracking-widest uppercase shadow-[0_0_12px_rgba(239,68,68,0.6)] flex items-center gap-1">
+                      <span class="text-xs leading-none">★</span>
+                      <span>PATENTED</span>
+                      <span class="text-xs leading-none">★</span>
+                    </div>
+                  </div>
+                ` : ''}
               </div>
               <div class="pl-note">${s.title || 'Untitled'}</div>
             </div>
@@ -1134,7 +1163,11 @@
       }
 
       goTo(i) {
-        this.sim.target = clamp(i, 0, this.n - 1) * this.spacing;
+        const next = clamp(i, 0, this.n - 1);
+        this.sim.target = next * this.spacing;
+        this.activeRef = next;
+        this.active = next;
+        this.updateCaption(next);
       }
 
       step(dir) {
@@ -1157,10 +1190,6 @@
 
       setupEvents() {
         window.addEventListener('resize', () => this.updateDimensions());
-
-        // Hover pause/resume
-        this.root.addEventListener('mouseenter', () => { this.isHovered = true; });
-        this.root.addEventListener('mouseleave', () => { this.isHovered = false; });
 
         // Storage listener for Admin sync
         window.addEventListener('storage', () => {
@@ -1300,6 +1329,19 @@
           linkBtn.href = s.link || 'https://github.com/tanmaytuliofficial/neogeninnovators';
         }
 
+        // Patent Stamp & Official IP Badge in Modal
+        const stampEl = document.getElementById('modal-project-stamp');
+        if (stampEl) {
+          if (s.isPatented) stampEl.classList.remove('hidden');
+          else stampEl.classList.add('hidden');
+        }
+
+        const patentBadge = document.getElementById('modal-patent-badge');
+        if (patentBadge) {
+          if (s.isPatented) patentBadge.classList.remove('hidden');
+          else patentBadge.classList.add('hidden');
+        }
+
         modal.classList.remove('opacity-0', 'pointer-events-none');
         const dlg = modal.querySelector('.modal-dialog-box');
         if (dlg) { dlg.classList.remove('scale-95'); dlg.classList.add('scale-100'); }
@@ -1308,10 +1350,10 @@
       startAutoplay() {
         if (this.autoTimer) clearInterval(this.autoTimer);
         this.autoTimer = setInterval(() => {
-          if (document.hidden || this.drag || this.isHovered || this.isModalOpen) return;
-          const next = this.activeRef >= this.n - 1 ? 0 : this.activeRef + 1;
+          if (this.drag || this.isModalOpen) return;
+          const next = (this.activeRef + 1) % this.n;
           this.goTo(next);
-        }, this.autoplayInterval);
+        }, 2000);
       }
 
       startLoop() {

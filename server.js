@@ -79,7 +79,10 @@ const server = http.createServer((req, res) => {
   if (cleanPath === '/teamlogin' || cleanPath === '/dashboard') reqPath = '/dashboard.html';
   if (cleanPath === '/team') reqPath = '/team.html';
   
-  const filePath = path.join(ROOT, reqPath);
+  let filePath = path.join(ROOT, reqPath);
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(filePath, 'index.html');
+  }
 
   if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
     const ext = path.extname(filePath).toLowerCase();

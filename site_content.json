@@ -38,6 +38,7 @@
       "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
       "title": "Silicon Core V2",
       "caption": "Custom RP2040 breakout board soldered during 48hr hardware sprint.",
+      "isPatented": true,
       "details": "Engineered from scratch during an intense 48-hour hardware sprint. Silicon Core V2 integrates a dual-core RP2040 MCU with custom power delivery circuitry, dedicated 16MB QSPI flash, and high-speed differential signal routing. The board serves as the fundamental computing hub for NeoGen's modular sensor payloads, running bare-metal C++ firmware with zero external operating system overhead.",
       "specs": "RP2040 Dual-Core • 133MHz • 16MB QSPI Flash • KiCad 8 4-Layer PCB • 3.3V LDO",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -46,6 +47,7 @@
       "image": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop",
       "title": "Autonomous Rover",
       "caption": "LIDAR mapping and Sub-GHz telemetry testing in Delhi.",
+      "isPatented": true,
       "details": "A ground-up cyber-physical rover designed for rugged off-road autonomous exploration and environmental mapping. Features 360-degree LiDAR simultaneous localization and mapping (SLAM), wheel-encoder odometry, and an ultra-reliable 433MHz Sub-GHz telemetry link delivering live kinematic data up to 3 kilometers away without Wi-Fi or cellular connectivity.",
       "specs": "ROS2 Humble • RPLiDAR A1 • STM32F4 Motion Controller • 433MHz LoRa Telemetry • 12V LiFePO4",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -54,6 +56,7 @@
       "image": "https://images.unsplash.com/photo-1581092335397-9583fe92d232?q=80&w=1200&auto=format&fit=crop",
       "title": "LoRa Mesh Node",
       "caption": "Solar-powered environmental sensor grid running on ESP32.",
+      "isPatented": false,
       "details": "Ultra-low power autonomous field node engineered to run indefinitely on a single 18650 lithium cell paired with a 2W solar harvester. Nodes self-organize into a resilient multi-hop mesh network over Semtech SX1262 transceivers, collecting microclimate data, soil moisture, and atmospheric particulate metrics across remote campus regions.",
       "specs": "ESP32-S3 • SX1262 LoRa 868MHz • BME680 Environmental Sensor • Deep-Sleep 15uA • 3D Printed IP67 Shell",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -62,6 +65,7 @@
       "image": "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=1200&auto=format&fit=crop",
       "title": "Edge AI Vision",
       "caption": "Quantized neural model inference running bare-metal on ARM Cortex-M55.",
+      "isPatented": true,
       "details": "Pioneering tiny machine learning on extreme edge microcontrollers. This project takes quantized MobileNet models (INT8 precision) and compiles them directly into ARM CMSIS-NN instructions, achieving 18 frames per second person-detection on a battery-powered camera module drawing under 120 milliwatts.",
       "specs": "ARM Cortex-M55 • Ethos-U55 NPU • TensorFlow Lite Micro • 18 FPS • 110mW Active Power",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -70,6 +74,7 @@
       "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
       "title": "Maker Lab Night",
       "caption": "Late night reflow soldering, logic analyzer debugging, and firmware flashing.",
+      "isPatented": false,
       "details": "A raw look inside our overnight hardware build sessions. Student engineers gather with hot air rework stations, USB logic analyzers, and oscilloscopes to debug I2C bus contention, trace high-frequency noise spikes, and flash bare-metal RTOS bootloaders before sunrise.",
       "specs": "Rigol DS1054Z Scope • Saleae Logic Pro • TS100 Smart Iron • Lead-Free Sn96.5 SMD Paste",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
@@ -78,6 +83,7 @@
       "image": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&auto=format&fit=crop",
       "title": "Firmware Flash",
       "caption": "Zero-latency FreeRTOS sensor fusion testing on physical silicon.",
+      "isPatented": false,
       "details": "Hard real-time deterministic firmware architecture written in bare-metal C. Utilizing FreeRTOS preemptive scheduling to read 6-axis IMU sensors at 1000Hz, execute Extended Kalman Filter (EKF) calculations, and output PWM motor actuation commands with under 250 microseconds of total loop jitter.",
       "specs": "FreeRTOS Kernel v10 • 1000Hz IMU Loop • Extended Kalman Filter (EKF) • SWD Debug via J-Link",
       "link": "https://github.com/tanmaytuliofficial/neogeninnovators"
