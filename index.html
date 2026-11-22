@@ -573,44 +573,127 @@
 
 
   <!-- ================= WHAT WE ACTUALLY DO SECTION ================= -->
-  <section class="py-24 px-6 sm:px-12 bg-cream text-ink border-b-3 border-ink">
+  <section id="what-we-do" class="py-24 px-6 sm:px-12 bg-cream text-ink border-b-3 border-ink overflow-hidden relative">
     
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-7xl mx-auto">
       
-      <span class="font-mono text-xs font-bold text-burgundy tracking-[0.2em] block mb-3 uppercase">
-        §02 — WHAT WE DO
-      </span>
-      <h2 class="font-display text-5xl sm:text-7xl md:text-8xl uppercase leading-[0.88] tracking-tight mb-16">
-        WHAT WE ACTUALLY DO
-      </h2>
+      <div class="mb-14">
+        <span class="font-mono text-xs font-bold text-burgundy tracking-[0.2em] block mb-2 uppercase">
+          °02 — WHAT WE DO
+        </span>
+        <div class="inline-block relative">
+          <h2 class="font-display text-5xl sm:text-7xl md:text-8xl uppercase leading-[0.88] tracking-tight">
+            WHAT WE ACTUALLY DO
+          </h2>
+          <!-- Organic Warm Brush Underline -->
+          <svg class="w-48 sm:w-72 h-3.5 text-[#d99b5a] mt-2 block" viewBox="0 0 300 16" fill="none">
+            <path d="M 5 11 C 70 4, 190 3, 295 9 C 210 14, 90 15, 5 11 Z" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Track 01 -->
-        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
-          <span class="font-mono text-xs font-bold text-burgundy">01 // PROTOTYPING</span>
-          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">HARDWARE SPRINTS</h3>
-          <p class="font-mono text-xs text-ink/80 leading-relaxed">
-            High-cadence 48-hour sprints with 3D printers, oscilloscope benches, soldering irons, and custom ESP32/RP2040 breakout boards.
-          </p>
+      <!-- Cards Grid with Space for Leaning Founder -->
+      <div class="relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:pr-56 xl:pr-64">
+          
+          <!-- Track 01 -->
+          <div class="border-2 border-black bg-white rounded-2xl p-6 sm:p-7 shadow-[6px_6px_0px_#000000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_#000000] transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold text-black uppercase tracking-wider">01 // PROTOTYPING</span>
+                <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="2" />
+                  <rect x="9" y="9" width="6" height="6" />
+                  <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3" />
+                </svg>
+              </div>
+              <h3 class="font-sans font-black text-2xl uppercase tracking-tight mb-3">HARDWARE SPRINTS</h3>
+              <p class="font-mono text-xs text-ink/80 leading-relaxed">
+                High-cadence 48-hour sprints with 3D printers, oscilloscope benches, soldering irons, and custom ESP32/RP2040 breakout boards.
+              </p>
+            </div>
+          </div>
+
+          <!-- Track 02 -->
+          <div class="border-2 border-black bg-white rounded-2xl p-6 sm:p-7 shadow-[6px_6px_0px_#000000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_#000000] transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold text-black uppercase tracking-wider">02 // SILICON</span>
+                <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+              </div>
+              <h3 class="font-sans font-black text-2xl uppercase tracking-tight mb-3">AI &amp; EDGE LABS</h3>
+              <p class="font-mono text-xs text-ink/80 leading-relaxed">
+                Deploying quantized TinyML computer vision models onto ultra-low power ARM microcontrollers without relying on cloud APIs.
+              </p>
+            </div>
+          </div>
+
+          <!-- Track 03 (With Leaning Founder Anchor) -->
+          <div class="relative border-2 border-black bg-white rounded-2xl p-6 sm:p-7 shadow-[6px_6px_0px_#000000] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_#000000] transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="font-mono text-xs font-bold text-black uppercase tracking-wider">03 // AUTONOMY</span>
+                <svg class="w-7 h-7 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 10v4M10 12h4" />
+                  <circle cx="12" cy="12" r="2" />
+                  <path d="M5 7l3 3M19 7l-3 3M5 17l3-3M19 17l-3-3" />
+                  <line x1="2" y1="7" x2="8" y2="7" />
+                  <line x1="16" y1="7" x2="22" y2="7" />
+                  <line x1="2" y1="17" x2="8" y2="17" />
+                  <line x1="16" y1="17" x2="22" y2="17" />
+                </svg>
+              </div>
+              <h3 class="font-sans font-black text-2xl uppercase tracking-tight mb-3">AUTONOMOUS SYSTEMS</h3>
+              <p class="font-mono text-xs text-ink/80 leading-relaxed">
+                Ground-up autonomous rovers, flight-controller firmware, and mesh communications built from raw carbon fiber and silicon.
+              </p>
+            </div>
+
+            <!-- Desktop Leaning Founder Illustration (Anchored to Card 3) -->
+            <div class="hidden lg:block absolute left-[83%] -top-[128px] w-[235px] xl:w-[255px] pointer-events-none select-none z-20">
+              <!-- Backdrop soft circular element -->
+              <div class="absolute -z-10 right-0 top-10 w-48 h-60 rounded-full bg-[#ecd9c2]/80 border border-[#dfc9b0]/60 blur-[0.5px]"></div>
+              
+              <!-- Subtle accent ring arc -->
+              <svg class="absolute -z-10 -right-8 top-14 w-56 h-48 pointer-events-none text-[#cfb79b]/80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 200 160">
+                <path d="M 10 130 C 130 160, 200 90, 160 20 C 140 -20, 30 10, 20 60" />
+              </svg>
+
+              <!-- Hand-drawn spark accent lines \ | / -->
+              <div class="absolute left-6 top-3 text-black font-mono font-black text-xs select-none">
+                <span class="inline-block transform -rotate-45 mr-0.5">/</span>
+                <span class="inline-block transform -translate-y-1 font-bold text-sm">|</span>
+                <span class="inline-block transform rotate-45 ml-0.5">\</span>
+              </div>
+
+              <!-- Raushan Leaning Cutout -->
+              <img 
+                src="/raushan-leaning.png" 
+                alt="Raushan Kumar" 
+                class="w-full h-auto object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+              />
+
+              <!-- Sneaker Floor Shadow -->
+              <div class="absolute -bottom-2 right-4 w-36 h-4 bg-black/25 rounded-full blur-[3px] -z-10"></div>
+            </div>
+
+          </div>
+
         </div>
 
-        <!-- Track 02 -->
-        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
-          <span class="font-mono text-xs font-bold text-blue">02 // SILICON</span>
-          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">AI &amp; EDGE LABS</h3>
-          <p class="font-mono text-xs text-ink/80 leading-relaxed">
-            Deploying quantized TinyML computer vision models onto ultra-low power ARM microcontrollers without relying on cloud APIs.
-          </p>
-        </div>
-
-        <!-- Track 03 -->
-        <div class="border-3 border-ink bg-white p-6 shadow-[5px_5px_0_0_var(--border-ink)] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0_0_var(--border-ink)] transition-all">
-          <span class="font-mono text-xs font-bold text-slime">03 // AUTONOMY</span>
-          <h3 class="font-sans font-black text-2xl uppercase mt-2 mb-3">AUTONOMOUS SYSTEMS</h3>
-          <p class="font-mono text-xs text-ink/80 leading-relaxed">
-            Ground-up autonomous rovers, flight-controller firmware, and mesh communications built from raw carbon fiber and silicon.
-          </p>
+        <!-- Mobile / Tablet Leaning Founder Presentation (Shown below cards on mobile) -->
+        <div class="lg:hidden mt-8 flex justify-center">
+          <div class="relative w-56 sm:w-64">
+            <div class="absolute -z-10 inset-0 m-auto w-48 h-48 rounded-full bg-[#ecd9c2]/80 blur-sm"></div>
+            <img 
+              src="/raushan-leaning.png" 
+              alt="Raushan Kumar" 
+              class="w-full h-auto object-contain filter drop-shadow-[0_15px_30px_rgba(0,0,0,0.3)]"
+            />
+          </div>
         </div>
 
       </div>
