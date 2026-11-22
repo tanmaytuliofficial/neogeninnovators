@@ -7,7 +7,7 @@ export async function onRequestGet(context) {
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
-            "Cache-Control": "no-cache"
+            "Cache-Control": "no-cache, no-store, must-revalidate"
           }
         });
       }
@@ -27,16 +27,31 @@ export async function onRequestGet(context) {
 export async function onRequestPost(context) {
   try {
     const body = await context.request.json();
+    const now = Date.now();
+    body._updatedAt = now;
+    body._serverUpdatedAt = now;
+
     if (context.env && context.env.NEOGEN_KV) {
       await context.env.NEOGEN_KV.put("site_content", JSON.stringify(body, null, 2));
-      return new Response(JSON.stringify({ success: true, persisted: "kv", count: Object.keys(body).length }), {
+      return new Response(JSON.stringify({ 
+        success: true, 
+        persisted: "kv", 
+        updatedAt: now,
+        count: Object.keys(body).length 
+      }), {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*"
         }
       });
     }
-    return new Response(JSON.stringify({ success: true, persisted: "client", count: Object.keys(body).length }), {
+
+    return new Response(JSON.stringify({ 
+      success: true, 
+      persisted: "client", 
+      updatedAt: now,
+      count: Object.keys(body).length 
+    }), {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*"

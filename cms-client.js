@@ -53,10 +53,15 @@
   }
 
   function syncCMS() {
-    // 1. Immediately apply from cache if available (zero latency)
+    let localUpdatedAt = 0;
+    // 1. Immediately apply from cache if available (0ms instant render)
     try {
       const cached = localStorage.getItem('neogen_site_content');
-      if (cached) applyContent(JSON.parse(cached));
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        localUpdatedAt = parsed._updatedAt || parsed._clientUpdatedAt || 0;
+        applyContent(parsed);
+      }
     } catch (e) {}
 
     // 2. Fetch fresh from server API
@@ -64,6 +69,11 @@
       .then(res => res.json())
       .then(data => {
         if (data && Object.keys(data).length) {
+          const serverUpdatedAt = data._serverUpdatedAt || data._updatedAt || 0;
+          // Never overwrite newer local user edits with stale static git assets!
+          if (localUpdatedAt && localUpdatedAt > serverUpdatedAt) {
+            return;
+          }
           applyContent(data);
           localStorage.setItem('neogen_site_content', JSON.stringify(data));
         }

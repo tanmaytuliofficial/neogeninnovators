@@ -180,6 +180,16 @@
           <span>Live Site ↗</span>
         </a>
 
+        <!-- Export site_content.json Button -->
+        <button 
+          type="button" 
+          onclick="downloadActiveContentJSON()" 
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-semibold text-zinc-300 bg-white/5 border border-white/15 hover:bg-white/15 hover:text-white transition-all cursor-pointer"
+          title="Download updated site_content.json for Git repository"
+        >
+          <span>📥 Export JSON</span>
+        </button>
+
         <!-- Lock Console Button -->
         <button 
           type="button" 
@@ -1068,7 +1078,9 @@
       const saveBtn = document.getElementById('btn-save-polaroids');
       if (saveBtn) {
         saveBtn.addEventListener('click', async () => {
+          const now = Date.now();
           localStorage.setItem('neogen_polaroid_slides', JSON.stringify(currentPolaroids));
+          localStorage.setItem('neogen_polaroid_updated_at', now.toString());
           window.dispatchEvent(new Event('storage'));
 
           try {
@@ -1078,6 +1090,7 @@
               existingContent = await res.json();
             } catch (e) {}
             existingContent.polaroidSlides = currentPolaroids;
+            existingContent._updatedAt = now;
             await fetch('/api/content', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1101,17 +1114,25 @@
 
     async function loadUniversalContentAdmin() {
       let data = null;
+      let localTime = 0;
       try {
-        const res = await fetch('/api/content');
-        data = await res.json();
+        const cached = localStorage.getItem('neogen_site_content');
+        if (cached) {
+          data = JSON.parse(cached);
+          localTime = data._updatedAt || data._clientUpdatedAt || 0;
+        }
       } catch (e) {}
 
-      if (!data || !Object.keys(data).length) {
-        try {
-          const cached = localStorage.getItem('neogen_site_content');
-          if (cached) data = JSON.parse(cached);
-        } catch (e) {}
-      }
+      try {
+        const res = await fetch('/api/content');
+        const serverData = await res.json();
+        if (serverData && Object.keys(serverData).length) {
+          const serverTime = serverData._serverUpdatedAt || serverData._updatedAt || 0;
+          if (!data || serverTime > localTime) {
+            data = serverData;
+          }
+        }
+      } catch (e) {}
 
       if (!data && window.NeoGenCMS) {
         data = window.NeoGenCMS.DEFAULTS;
@@ -1134,16 +1155,22 @@
         if (input) data[key] = input.value;
       });
 
+      const now = Date.now();
+      data._updatedAt = now;
+      data._clientUpdatedAt = now;
+
+      // 1. Immediately persist to localStorage & broadcast across all open browser tabs
       localStorage.setItem('neogen_site_content', JSON.stringify(data));
       window.dispatchEvent(new Event('storage'));
 
+      // 2. Also send to API endpoint (for Node backend or Cloudflare KV)
       try {
         let existing = {};
         try {
           const res = await fetch('/api/content');
           existing = await res.json();
         } catch (e) {}
-        const merged = { ...existing, ...data };
+        const merged = { ...existing, ...data, _updatedAt: now };
         await fetch('/api/content', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1182,14 +1209,27 @@
     let currentTeamMembers = [];
 
     async function loadTeamMembers() {
+      let localTime = 0;
+      try {
+        const meta = localStorage.getItem('neogen_team_updated_at');
+        if (meta) localTime = parseInt(meta, 10) || 0;
+        const cached = localStorage.getItem('neogen_team_members');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed) && parsed.length) {
+            currentTeamMembers = parsed;
+          }
+        }
+      } catch (e) {}
+
       try {
         const res = await fetch('/api/content');
         const data = await res.json();
         if (data && data.teamMembers && data.teamMembers.length) {
-          currentTeamMembers = data.teamMembers;
-        } else {
-          const cached = localStorage.getItem('neogen_team_members');
-          if (cached) currentTeamMembers = JSON.parse(cached);
+          const serverTime = data._serverUpdatedAt || data._updatedAt || 0;
+          if (!currentTeamMembers.length || serverTime > localTime) {
+            currentTeamMembers = data.teamMembers;
+          }
         }
       } catch (e) {}
 
@@ -1389,7 +1429,9 @@
     };
 
     window.saveTeamMembersAdmin = async function() {
+      const now = Date.now();
       localStorage.setItem('neogen_team_members', JSON.stringify(currentTeamMembers));
+      localStorage.setItem('neogen_team_updated_at', now.toString());
       window.dispatchEvent(new Event('storage'));
 
       try {
@@ -1399,6 +1441,7 @@
           existingContent = await res.json();
         } catch (e) {}
         existingContent.teamMembers = currentTeamMembers;
+        existingContent._updatedAt = now;
         await fetch('/api/content', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1406,11 +1449,56 @@
         });
       } catch (e) {}
 
-      showToast('Team roster updated and saved!');
+      showToast('Team roster updated and saved! Live site updated.');
     };
 
+    // --- 6. UNIVERSAL EXPORT & DOWNLOAD UTILITY ---
+    window.getFullContentExport = function() {
+      const exportObj = {};
 
-    // --- 6. TOAST NOTIFICATIONS ---
+      // 1. Universal CMS copy
+      CMS_KEYS.forEach(key => {
+        const input = document.getElementById('cms_' + key);
+        if (input) exportObj[key] = input.value;
+      });
+
+      // 2. Hanging Polaroids
+      exportObj.polaroidSlides = currentPolaroids;
+
+      // 3. Admin Password
+      exportObj.adminPassword = getMasterPassword();
+
+      // 4. Team Members
+      exportObj.teamMembers = currentTeamMembers;
+
+      // 5. Timestamp
+      exportObj._updatedAt = Date.now();
+
+      return exportObj;
+    };
+
+    window.downloadActiveContentJSON = function() {
+      const data = getFullContentExport();
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", str);
+      downloadAnchor.setAttribute("download", "site_content.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('site_content.json downloaded! You can commit it to Git.');
+    };
+
+    window.copyActiveContentJSON = function() {
+      const data = getFullContentExport();
+      navigator.clipboard.writeText(JSON.stringify(data, null, 2)).then(() => {
+        showToast('Full site_content.json copied to clipboard!');
+      }).catch(() => {
+        showToast('Could not copy to clipboard. Please use Export button.');
+      });
+    };
+
+    // --- 7. TOAST NOTIFICATIONS ---
     function showToast(msg) {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-msg');
@@ -1435,7 +1523,7 @@
   </script>
 
   <!-- Universal CMS Sync Client -->
-  <script src="cms-client.js"></script>
+  <script src="/cms-client.js"></script>
 
 </body>
 </html>
